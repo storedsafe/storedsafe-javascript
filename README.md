@@ -1,11 +1,11 @@
-" StoredSafe JavaScript
+# StoredSafe JavaScript
 JavaScript bindings for the StoredSafe RESTlike API. All methods are completely transparent and built on top of axios. This means the return value is the Promise returned by axios. No parsing is done whatsoever beyond saving the token returned by authentication requests for convenience.
 
-"" Usage
+## Usage
 The structure of the returned data is described in the [https://tracker.storedsafe.com/projects/storedsafe20/wiki/Version_10_release_documentation](StoredSafe RESTlike API) documentation.
 For learning more about the Promise-based return values, look at the [https://github.com/axios/axios](axios) documentation.
 
-""" Authentication
+### Authentication
 ```
 const StoredSafe = require('storedsafe');
 
@@ -24,7 +24,7 @@ storedsafe.authYubikey(username, passphrase, otp)
   });
 ```
 
-""" Decrypt object with id 42
+### Decrypt object with id 42
 ```
 const StoredSafe = require('storedsafe');
 
@@ -40,14 +40,14 @@ storedsafe.objectDecrypt(42)
     console.log(secret);
   }).catch(error) => {
     if (error.response.stats === 403) {
-      console.log("Invalid credentials");
+      console.log(error.response.data.ERRORS);
     } // Handle errors or HTTP status codes other than 200
   }).then(() => {
     // Always execute
   });
 ```
 
-""" Method signatures
+### Method signatures
 ```
 constructor(site, apikey, token=null, version='1.0')
 authYubikey(username, passphrase, otp)
