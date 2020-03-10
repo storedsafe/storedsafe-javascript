@@ -8,8 +8,9 @@ For learning more about the Promise-based return values, look at the [axios](htt
 ### Authentication
 ```javascript
 const StoredSafe = require('storedsafe');
-
 const storedsafe = new StoredSafe('vault.my-storedsafe-site.com', 'my-api-key');
+
+// token gets saved in StoredSafe object on successful request
 storedsafe.authYubikey(username, passphrase, otp)
   .then(res => res.data)
   .then(data => {
@@ -27,12 +28,12 @@ storedsafe.authYubikey(username, passphrase, otp)
 ### Decrypt object with id 42
 ```javascript
 const StoredSafe = require('storedsafe');
-
 const storedsafe = new StoredSafe(
   'vault.my-storedsafe-site.com',
   'my-api-key',
   'my-token'
 );
+
 storedsafe.objectDecrypt(42)
   .then(res => res.data)
   .then(data => {
