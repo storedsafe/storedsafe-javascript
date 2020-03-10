@@ -2,8 +2,8 @@
 JavaScript bindings for the StoredSafe RESTlike API. All methods are completely transparent and built on top of axios. This means the return value is the Promise returned by axios. No parsing is done whatsoever beyond saving the token returned by authentication requests for convenience.
 
 ## Usage
-The structure of the returned data is described in the [https://tracker.storedsafe.com/projects/storedsafe20/wiki/Version_10_release_documentation](StoredSafe RESTlike API) documentation.
-For learning more about the Promise-based return values, look at the [https://github.com/axios/axios](axios) documentation.
+The structure of the returned data is described in the [StoredSafe RESTlike API](https://tracker.storedsafe.com/projects/storedsafe20/wiki/Version_10_release_documentation) documentation.
+For learning more about the Promise-based return values, look at the [axios](https://github.com/axios/axios) documentation.
 
 ### Authentication
 ```javascript
