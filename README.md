@@ -6,7 +6,7 @@ The structure of the returned data is described in the [https://tracker.storedsa
 For learning more about the Promise-based return values, look at the [https://github.com/axios/axios](axios) documentation.
 
 ### Authentication
-```
+```javascript
 const StoredSafe = require('storedsafe');
 
 const storedsafe = new StoredSafe('vault.my-storedsafe-site.com', 'my-api-key');
@@ -25,7 +25,7 @@ storedsafe.authYubikey(username, passphrase, otp)
 ```
 
 ### Decrypt object with id 42
-```
+```javascript
 const StoredSafe = require('storedsafe');
 
 const storedsafe = new StoredSafe(
@@ -48,7 +48,7 @@ storedsafe.objectDecrypt(42)
 ```
 
 ### Method signatures
-```
+```javascript
 constructor(site, apikey, token=null, version='1.0')
 authYubikey(username, passphrase, otp)
 authTotp(username, passphrase, otp)
