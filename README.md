@@ -49,23 +49,23 @@ storedsafe.objectDecrypt(42)
 
 ### Method signatures
 ```javascript
-constructor(site, apikey, token=null, version='1.0')
-authYubikey(username, passphrase, otp)
-authTotp(username, passphrase, otp)
-authSmartcard(username, passphrase, otp)
-logout()
-check()
-vaultList()
-vaultObjects(id)
-vaultCreate(params)
-vaultEdit(id, params)
-vaultDelete(id)
-object(id, children=false)
-objectDecrypt(id)
-objectCreate(params)
-objectEdit(id, params)
-objectDelete(id)
-find(needle)
-templateList()
-template(id)
+constructor(site, apikey, token=null, version='1.0') {}
+authYubikey(username, passphrase, otp) {}
+authTotp(username, passphrase, otp) {}
+authSmartcard(username, passphrase, otp) {}
+logout() {}
+check() {}
+vaultList() {}
+vaultObjects(id) {}
+vaultCreate(params) {}
+vaultEdit(id, params) {}
+vaultDelete(id) {}
+object(id, children=false) {}
+objectDecrypt(id) {}
+objectCreate(params) {}
+objectEdit(id, params) {}
+objectDelete(id) {}
+find(needle) {}
+templateList() {}
+template(id) {}
 ```
