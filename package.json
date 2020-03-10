@@ -1,0 +1,29 @@
+{
+  "name": "storedsafe-javascript",
+  "version": "0.0.1",
+  "description": "JavaScript bindings for the StoredSafe REST-like API.",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/storedsafe/storedsafe-javascript.git"
+  },
+  "keywords": [
+    "storedsafe"
+  ],
+  "author": "Oscar Mattsson",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/storedsafe/storedsafe-javascript/issues"
+  },
+  "homepage": "https://github.com/storedsafe/storedsafe-javascript#readme",
+  "dependencies": {
+    "axios": "^0.19.2"
+  },
+  "devDependencies": {
+    "jest": "^25.1.0",
+    "nock": "^12.0.2"
+  }
+}
