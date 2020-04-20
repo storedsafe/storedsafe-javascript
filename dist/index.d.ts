@@ -88,6 +88,8 @@ export interface StoredSafeResponse {
         token?: string;
     };
 }
+export interface StoredSafePromise extends AxiosPromise<StoredSafeResponse> {
+}
 export declare enum LoginType {
     TOTP = "totp",
     SMARTCARD = "smc_rest"
@@ -97,23 +99,23 @@ declare class StoredSafe {
     apikey: string;
     token?: string;
     constructor(site: string, apikey: string, token?: string, version?: string);
-    authYubikey(username: string, passphrase: string, otp: string): AxiosPromise<StoredSafeResponse>;
-    authTotp(username: string, passphrase: string, otp: string): AxiosPromise<StoredSafeResponse>;
-    authSmartcard(username: string, passphrase: string, otp: string): AxiosPromise<StoredSafeResponse>;
-    logout(): AxiosPromise<StoredSafeResponse>;
-    check(): AxiosPromise<StoredSafeResponse>;
-    vaultList(): AxiosPromise<StoredSafeResponse>;
-    vaultObjects(id: string | number): AxiosPromise<StoredSafeResponse>;
-    vaultCreate(params: object): AxiosPromise<StoredSafeResponse>;
-    vaultEdit(id: string | number, params: object): AxiosPromise<StoredSafeResponse>;
-    vaultDelete(id: string | number): AxiosPromise<StoredSafeResponse>;
-    object(id: string | number, children?: boolean): AxiosPromise<StoredSafeResponse>;
-    objectDecrypt(id: string | number): AxiosPromise<StoredSafeResponse>;
-    objectCreate(params: object): AxiosPromise<StoredSafeResponse>;
-    objectEdit(id: string | number, params: object): AxiosPromise<StoredSafeResponse>;
-    objectDelete(id: string | number): AxiosPromise<StoredSafeResponse>;
-    find(needle: string): AxiosPromise<StoredSafeResponse>;
-    templateList(): AxiosPromise<StoredSafeResponse>;
-    template(id: string | number): AxiosPromise<StoredSafeResponse>;
+    authYubikey(username: string, passphrase: string, otp: string): StoredSafePromise;
+    authTotp(username: string, passphrase: string, otp: string): StoredSafePromise;
+    authSmartcard(username: string, passphrase: string, otp: string): StoredSafePromise;
+    logout(): StoredSafePromise;
+    check(): StoredSafePromise;
+    vaultList(): StoredSafePromise;
+    vaultObjects(id: string | number): StoredSafePromise;
+    vaultCreate(params: object): StoredSafePromise;
+    vaultEdit(id: string | number, params: object): StoredSafePromise;
+    vaultDelete(id: string | number): StoredSafePromise;
+    object(id: string | number, children?: boolean): StoredSafePromise;
+    objectDecrypt(id: string | number): StoredSafePromise;
+    objectCreate(params: object): StoredSafePromise;
+    objectEdit(id: string | number, params: object): StoredSafePromise;
+    objectDelete(id: string | number): StoredSafePromise;
+    find(needle: string): StoredSafePromise;
+    templateList(): StoredSafePromise;
+    template(id: string | number): StoredSafePromise;
 }
 export default StoredSafe;

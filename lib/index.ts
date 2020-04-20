@@ -91,6 +91,9 @@ export interface StoredSafeResponse {
   };
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface StoredSafePromise extends AxiosPromise<StoredSafeResponse> {}
+
 export enum LoginType {
   TOTP = 'totp',
   SMARTCARD =  'smc_rest',
@@ -123,7 +126,7 @@ class StoredSafe {
     username: string,
     passphrase: string,
     otp: string,
-  ): AxiosPromise<StoredSafeResponse> {
+  ): StoredSafePromise {
     return this.axios.post('/auth', {
       username: username,
       keys: `${passphrase}${this.apikey}${otp}`,
@@ -137,7 +140,7 @@ class StoredSafe {
     username: string,
     passphrase: string,
     otp: string,
-  ): AxiosPromise<StoredSafeResponse> {
+  ): StoredSafePromise {
     return this.axios.post('/auth', {
       username: username,
       passphrase: passphrase,
@@ -154,7 +157,7 @@ class StoredSafe {
     username: string,
     passphrase: string,
     otp: string,
-  ): AxiosPromise<StoredSafeResponse> {
+  ): StoredSafePromise {
     return this.axios.post('/auth', {
       username: username,
       passphrase: passphrase,
@@ -167,7 +170,7 @@ class StoredSafe {
     });
   }
 
-  logout(): AxiosPromise<StoredSafeResponse> {
+  logout(): StoredSafePromise {
     return this.axios.get('/auth/logout', {
       params: { token: this.token },
     }).then(response => {
@@ -176,13 +179,13 @@ class StoredSafe {
     });
   }
 
-  check(): AxiosPromise<StoredSafeResponse> {
+  check(): StoredSafePromise {
     return this.axios.post('/auth/check', {
       token: this.token
     });
   }
 
-  vaultList(): AxiosPromise<StoredSafeResponse> {
+  vaultList(): StoredSafePromise {
     return this.axios.get('/vault', {
       params: { token: this.token },
     });
@@ -190,7 +193,7 @@ class StoredSafe {
 
   vaultObjects(
     id: string | number,
-  ): AxiosPromise<StoredSafeResponse> {
+  ): StoredSafePromise {
     return this.axios.get(`/vault/${id}`, {
       params: { token: this.token },
     });
@@ -198,7 +201,7 @@ class StoredSafe {
 
   vaultCreate(
     params: object
-  ): AxiosPromise<StoredSafeResponse> {
+  ): StoredSafePromise {
     return this.axios.post('/vault', {
       ...params,
       token: this.token,
@@ -208,7 +211,7 @@ class StoredSafe {
   vaultEdit(
     id: string | number,
     params: object,
-  ): AxiosPromise<StoredSafeResponse> {
+  ): StoredSafePromise {
     return this.axios.put(`/vault/${id}`, {
       ...params,
       token: this.token,
@@ -217,7 +220,7 @@ class StoredSafe {
 
   vaultDelete(
     id: string | number,
-  ): AxiosPromise<StoredSafeResponse> {
+  ): StoredSafePromise {
     return this.axios.delete(`/vault/${id}`, {
       params: { token: this.token },
     });
@@ -226,7 +229,7 @@ class StoredSafe {
   object(
     id: string | number,
     children=false,
-  ): AxiosPromise<StoredSafeResponse> {
+  ): StoredSafePromise {
     return this.axios.get(`/object/${id}`, {
       params: { token: this.token, children: children },
     });
@@ -234,7 +237,7 @@ class StoredSafe {
 
   objectDecrypt(
     id: string | number,
-  ): AxiosPromise<StoredSafeResponse> {
+  ): StoredSafePromise {
     return this.axios.get(`/object/${id}`, {
       params: { token: this.token, decrypt: true },
     });
@@ -242,7 +245,7 @@ class StoredSafe {
 
   objectCreate(
     params: object,
-  ): AxiosPromise<StoredSafeResponse> {
+  ): StoredSafePromise {
     return this.axios.post('/object', {
       ...params,
       token: this.token,
@@ -252,7 +255,7 @@ class StoredSafe {
   objectEdit(
     id: string | number,
     params: object,
-  ): AxiosPromise<StoredSafeResponse> {
+  ): StoredSafePromise {
     return this.axios.put(`/object/${id}`, {
       ...params,
       token: this.token,
@@ -261,7 +264,7 @@ class StoredSafe {
 
   objectDelete(
     id: string | number,
-  ): AxiosPromise<StoredSafeResponse> {
+  ): StoredSafePromise {
     return this.axios.delete(`/object/${id}`, {
       params: { token: this.token },
     });
@@ -269,13 +272,13 @@ class StoredSafe {
 
   find(
     needle: string
-  ): AxiosPromise<StoredSafeResponse> {
+  ): StoredSafePromise {
     return this.axios.get('/find', {
       params: { token: this.token, needle: needle },
     });
   }
 
-  templateList(): AxiosPromise<StoredSafeResponse> {
+  templateList(): StoredSafePromise {
     return this.axios.get('/template', {
       params: { token: this.token },
     });
@@ -283,7 +286,7 @@ class StoredSafe {
 
   template(
     id: string | number,
-  ): AxiosPromise<StoredSafeResponse> {
+  ): StoredSafePromise {
     return this.axios.get(`/template/${id}`, {
       params: { token: this.token },
     });
