@@ -30,7 +30,7 @@ export interface StoredSafeTemplate {
     id: string;
     name: string;
     ico: string;
-    active: string;
+    active: boolean;
     wb: boolean;
     ed?: boolean;
     jp?: boolean;
