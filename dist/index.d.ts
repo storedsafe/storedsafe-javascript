@@ -8,7 +8,7 @@ export interface StoredSafeVault {
     statustext: string;
 }
 export interface StoredSafeObject {
-    id: number;
+    id: string;
     parentid: string;
     templateid: string;
     groupid: string;
@@ -20,6 +20,9 @@ export interface StoredSafeObject {
     tags: string;
     alarmed: string;
     public: {
+        [field: string]: string;
+    };
+    crypted?: {
         [field: string]: string;
     };
 }
