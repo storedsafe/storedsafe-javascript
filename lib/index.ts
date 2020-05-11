@@ -20,7 +20,7 @@ export interface StoredSafeObject {
   children: string;
   notes: string | boolean;
   tags: string;
-  alarmed: string;
+  alarmed: string | boolean;
   public: { [field: string]: string };
   crypted?: { [field: string]: string };
 }
