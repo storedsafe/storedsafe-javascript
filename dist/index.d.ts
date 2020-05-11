@@ -16,7 +16,7 @@ export interface StoredSafeObject {
     objectname: string;
     filename: string;
     children: string;
-    notes: string;
+    notes: string | boolean;
     tags: string;
     alarmed: string;
     public: {
