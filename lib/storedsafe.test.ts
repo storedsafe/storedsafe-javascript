@@ -23,19 +23,12 @@ const keys = `${passphrase}${apikey}${otp}`;
 const replySuccess = Object.freeze({
   CALLINFO: { token: token }
 });
-const replyError = Object.freeze({
-  ERRORS: [ 'ERROR' ],
-});
 
 // Sample parameters
 const id = 1789;
 const needle = 'waldo';
 const params = Object.freeze({
   name: 'newname',
-});
-const paramsWithToken = Object.freeze({
-  ...params,
-  token: token,
 });
 
 // Declare storedsafe object variable (initialized in beforeEach)
@@ -46,19 +39,19 @@ describe("before authentication", () => {
     storedsafe = new StoredSafe(site, apikey);
   });
 
-  test(".authYubikey, sets token", () => {
+  test(".loginYubikey, sets token", () => {
     nock(url).post('/auth', {
       username: username,
       keys: keys,
     }).reply(200, replySuccess);
-    return storedsafe.authYubikey(username, passphrase, otp)
+    return storedsafe.loginYubikey(username, passphrase, otp)
     .then((res) => {
       expect(res.status).toBe(200);
       expect(storedsafe.token).toBe(token);
     });
   });
 
-  test(".authTotp, sets token", () => {
+  test(".loginTotp, sets token", () => {
     nock(url)
     .post('/auth', {
       username: username,
@@ -68,7 +61,7 @@ describe("before authentication", () => {
       logintype: LoginType.TOTP,
     })
     .reply(200, replySuccess);
-    return storedsafe.authTotp(
+    return storedsafe.loginTotp(
       username, passphrase, otp
     ).then((res) => {
       expect(res.status).toBe(200);
@@ -76,7 +69,7 @@ describe("before authentication", () => {
     });
   });
 
-  test(".authSmartcard, sets token", () => {
+  test(".loginSmartcard, sets token", () => {
     nock(url)
     .post('/auth', {
       username: username,
@@ -86,7 +79,7 @@ describe("before authentication", () => {
       logintype: LoginType.SMARTCARD,
     })
     .reply(200, replySuccess);
-    return storedsafe.authSmartcard(
+    return storedsafe.loginSmartcard(
       username, passphrase, otp
     ).then(res => {
       expect(res.status).toBe(200);
@@ -102,9 +95,12 @@ describe("after authentication", () => {
 
   describe("/auth", () => {
     test(".logout, removes token", () => {
-      nock(url)
+      nock(url, {
+        reqheaders: {
+          'X-Http-Token': token,
+        },
+      })
       .get('/auth/logout')
-      .query({ token: token })
       .reply(200, replySuccess)
       return storedsafe.logout()
       .then(res => {
@@ -114,9 +110,13 @@ describe("after authentication", () => {
     });
 
     test(".check", () => {
-      nock(url).post('/auth/check', {
-        token: token
-      }).reply(200, replySuccess);
+      nock(url, {
+        reqheaders: {
+          'x-http-token': token,
+        },
+      })
+      .post('/auth/check')
+      .reply(200, replySuccess);
       return storedsafe.check()
       .then(res => {
         expect(res.status).toBe(200);
@@ -125,21 +125,27 @@ describe("after authentication", () => {
   }); // END AUTH
 
   describe("/vault", () => {
-    test(".vaultList", () => {
-      nock(url)
+    test(".listVaults", () => {
+      nock(url, {
+        reqheaders: {
+          'X-Http-Token': token,
+        },
+      })
       .get('/vault')
-      .query({ token: token })
       .reply(200, replySuccess);
-      return storedsafe.vaultList()
+      return storedsafe.listVaults()
       .then(res => {
         expect(res.status).toBe(200);
       });
     });
 
     test(".vaultObjects", () => {
-      nock(url)
+      nock(url, {
+        reqheaders: {
+          'X-Http-Token': token,
+        },
+      })
       .get(`/vault/${id}`)
-      .query({ token: token })
       .reply(200, replySuccess);
       return storedsafe.vaultObjects(id)
       .then(res => {
@@ -147,32 +153,57 @@ describe("after authentication", () => {
       });
     });
 
-    test(".vaultCreate", () => {
-      nock(url)
-      .post('/vault', paramsWithToken)
+    test(".vaultMembers", () => {
+      nock(url, {
+        reqheaders: {
+          'X-Http-Token': token,
+        },
+      })
+      .get(`/vault/${id}/members`)
       .reply(200, replySuccess);
-      return storedsafe.vaultCreate(params)
+      return storedsafe.vaultMembers(id)
       .then(res => {
         expect(res.status).toBe(200);
       });
     });
 
-    test(".vaultEdit", () => {
-      nock(url)
-      .put(`/vault/${id}`, paramsWithToken)
+    test(".createVault", () => {
+      nock(url, {
+        reqheaders: {
+          'X-Http-Token': token,
+        },
+      })
+      .post('/vault', params)
+      .reply(200, replySuccess);
+      return storedsafe.createVault(params)
+      .then(res => {
+        expect(res.status).toBe(200);
+      });
+    });
+
+    test(".editVault", () => {
+      nock(url, {
+        reqheaders: {
+          'X-Http-Token': token,
+        },
+      })
+      .put(`/vault/${id}`, params)
       .reply(200, replySuccess)
-      return storedsafe.vaultEdit(id, params)
+      return storedsafe.editVault(id, params)
       .then(res => {
         expect(res.status).toBe(200);
       });
     });
 
-    test(".vaultDelete", () => {
-      nock(url)
+    test(".deleteVault", () => {
+      nock(url, {
+        reqheaders: {
+          'X-Http-Token': token,
+        },
+      })
       .delete(`/vault/${id}`)
-      .query({ token: token })
       .reply(200, replySuccess)
-      return storedsafe.vaultDelete(id)
+      return storedsafe.deleteVault(id)
       .then(res => {
         expect(res.status).toBe(200);
       });
@@ -181,9 +212,13 @@ describe("after authentication", () => {
 
   describe("/object", () => {
     test(".object, default (no children)", () => {
-      nock(url)
+      nock(url, {
+        reqheaders: {
+          'X-Http-Token': token,
+        },
+      })
       .get(`/object/${id}`)
-      .query({ token: token, children: false })
+      .query({ children: false })
       .reply(200, replySuccess);
       return storedsafe.object(id)
       .then(res => {
@@ -192,9 +227,13 @@ describe("after authentication", () => {
     });
 
     test(".object, no children", () => {
-      nock(url)
+      nock(url, {
+        reqheaders: {
+          'X-Http-Token': token,
+        },
+      })
       .get(`/object/${id}`)
-      .query({ token: token, children: false })
+      .query({ children: false })
       .reply(200, replySuccess);
       return storedsafe.object(id, false)
       .then(res => {
@@ -203,9 +242,13 @@ describe("after authentication", () => {
     });
 
     test(".object, with children", () => {
-      nock(url)
+      nock(url, {
+        reqheaders: {
+          'X-Http-Token': token,
+        },
+      })
       .get(`/object/${id}`)
-      .query({ token: token, children: true })
+      .query({ children: true })
       .reply(200, replySuccess);
       return storedsafe.object(id, true)
       .then(res => {
@@ -213,43 +256,58 @@ describe("after authentication", () => {
       });
     });
 
-    test(".objectDecrypt", () => {
-      nock(url)
+    test(".decryptObject", () => {
+      nock(url, {
+        reqheaders: {
+          'X-Http-Token': token,
+        },
+      })
       .get(`/object/${id}`)
-      .query({ token: token, decrypt: true })
+      .query({ decrypt: true })
       .reply(200, replySuccess);
-      return storedsafe.objectDecrypt(id)
+      return storedsafe.decryptObject(id)
       .then(res => {
         expect(res.status).toBe(200);
       });
     });
 
-    test(".objectCreate", () => {
-      nock(url)
-      .post(`/object`, paramsWithToken)
+    test(".createObject", () => {
+      nock(url, {
+        reqheaders: {
+          'X-Http-Token': token,
+        },
+      })
+      .post(`/object`, params)
       .reply(200, replySuccess);
-      return storedsafe.objectCreate(params)
+      return storedsafe.createObject(params)
       .then(res => {
         expect(res.status).toBe(200);
       });
     });
 
-    test(".objectEdit", () => {
-      nock(url)
-      .put(`/object/${id}`, paramsWithToken)
+    test(".editObject", () => {
+      nock(url, {
+        reqheaders: {
+          'X-Http-Token': token,
+        },
+      })
+      .put(`/object/${id}`, params)
       .reply(200, replySuccess);
-      return storedsafe.objectEdit(id, params)
+      return storedsafe.editObject(id, params)
       .then(res => {
         expect(res.status).toBe(200);
       });
     });
 
-    test(".objectDelete", () => {
-      nock(url)
+    test(".deleteObject", () => {
+      nock(url, {
+        reqheaders: {
+          'X-Http-Token': token,
+        },
+      })
       .delete(`/object/${id}`)
-      .query({ token: token })
       .reply(200, replySuccess);
-      return storedsafe.objectDelete(id)
+      return storedsafe.deleteObject(id)
       .then(res => {
         expect(res.status).toBe(200);
       });
@@ -258,9 +316,13 @@ describe("after authentication", () => {
 
   describe("/find", () => {
     test(".find", () => {
-      nock(url)
+      nock(url, {
+        reqheaders: {
+          'X-Http-Token': token,
+        },
+      })
       .get('/find')
-      .query({ token: token, needle: needle })
+      .query({ needle: needle })
       .reply(200, replySuccess)
       return storedsafe.find(needle)
       .then(res => {
@@ -270,21 +332,27 @@ describe("after authentication", () => {
   }); // END FIND
 
   describe("/template", () => {
-    test(".templateList", () => {
-      nock(url)
+    test(".listTemplates", () => {
+      nock(url, {
+        reqheaders: {
+          'X-Http-Token': token,
+        },
+      })
       .get('/template')
-      .query({ token: token })
       .reply(200, replySuccess);
-      return storedsafe.templateList()
+      return storedsafe.listTemplates()
       .then(res => {
         expect(res.status).toBe(200);
       });
     });
 
     test(".template", () => {
-      nock(url)
+      nock(url, {
+        reqheaders: {
+          'X-Http-Token': token,
+        },
+      })
       .get(`/template/${id}`)
-      .query({ token: token })
       .reply(200, replySuccess)
       return storedsafe.template(id)
       .then(res => {
@@ -292,5 +360,97 @@ describe("after authentication", () => {
       });
     });
   }); // END TEMPLATE
+
+  describe("/utils", () => {
+    test(".permissionBits", () => {
+      nock(url, {
+        reqheaders: {
+          'X-Http-Token': token,
+        },
+      })
+      .get('/utils/statusvalues')
+      .reply(200, replySuccess);
+      return storedsafe.permissionBits()
+      .then(res => {
+        expect(res.status).toBe(200);
+      });
+    });
+
+    test(".passwordPolicies", () => {
+      nock(url, {
+        reqheaders: {
+          'X-Http-Token': token,
+        },
+      })
+      .get('/utils/policies')
+      .reply(200, replySuccess);
+      return storedsafe.passwordPolicies()
+      .then(res => {
+        expect(res.status).toBe(200);
+      });
+    });
+
+    test(".version", () => {
+      nock(url, {
+        reqheaders: {
+          'X-Http-Token': token,
+        },
+      })
+      .get('/utils/version')
+      .reply(200, replySuccess);
+      return storedsafe.version()
+      .then(res => {
+        expect(res.status).toBe(200);
+      });
+    });
+
+    test(".generatePassword", () => {
+      nock(url, {
+        reqheaders: {
+          'X-Http-Token': token,
+        },
+      })
+      .get('/utils/pwgen')
+      .reply(200, replySuccess);
+      return storedsafe.generatePassword()
+      .then(res => {
+        expect(res.status).toBe(200);
+      });
+    });
+    test(".generatePassword", () => {
+      const params: {
+        type?: 'pronouncable' | 'diceword' | 'opie' | 'secure' | 'pin';
+        length?: number;
+        language?: 'en_US' | 'sv_SE';
+        delimeter?: string;
+        words?: number;
+        min_char?: number;
+        max_char?: number;
+        policyid?: string;
+      } = {
+        type: 'pin',
+        length: 10,
+        language: 'sv_SE',
+        delimeter: '-',
+        words: 4,
+        min_char: 8,
+        max_char: 16,
+        policyid: '7',
+      };
+      nock(url, {
+        reqheaders: {
+          'X-Http-Token': token,
+        },
+      })
+      .get('/utils/pwgen')
+      .query(params)
+      .reply(200, replySuccess);
+      return storedsafe.generatePassword(params)
+      .then(res => {
+        expect(res.status).toBe(200);
+      });
+    });
+  }); // END TEMPLATE
+
 });
 

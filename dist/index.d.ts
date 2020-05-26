@@ -27,7 +27,8 @@ export interface StoredSafeObject {
     };
 }
 export interface StoredSafeTemplate {
-    INFO: {
+    id: string;
+    info: {
         id: string;
         name: string;
         ico: string;
@@ -36,7 +37,7 @@ export interface StoredSafeTemplate {
         ed?: boolean;
         jp?: boolean;
     };
-    STRUCTURE: {
+    structure: {
         [field: string]: {
             translation: string;
             type: string;
@@ -50,47 +51,133 @@ export interface StoredSafeTemplate {
         };
     };
 }
-export interface StoredSafeResponse {
-    GROUP?: {
-        [id: string]: StoredSafeVault;
+export interface StoredSafeUser {
+    email: string;
+    fingerprint: string;
+    fullname: string;
+    id: string;
+    otpprefix: string;
+    status: string;
+    username: string;
+}
+interface BaseCallinfo {
+    errorcodes: number;
+    errors: number;
+    general: string[];
+    handler: string;
+    status: string;
+}
+interface StoredSafeBaseResponse {
+    DATA: {
+        [key: string]: string | number | undefined;
     };
-    OBJECT?: {
-        [id: string]: StoredSafeObject;
+    HEADERS: {
+        [header: string]: string;
     };
-    TEMPLATESINFO?: {
-        [field: string]: StoredSafeTemplate;
-    };
-    TEMPLATE?: {
-        [field: string]: StoredSafeTemplate;
-    };
+    PARAMS: [];
+    CALLINFO: BaseCallinfo;
     ERRORS?: string[];
-    PARAMS: string[];
-    CALLINFO: {
-        ''?: string;
-        token?: string;
-        fingerprint?: string;
-        userid?: string;
-        password?: string;
-        userstatus?: string;
-        username?: string;
-        fullname?: string;
-        timeout?: number;
-        filesupport?: string;
-        message?: string;
-        objectid?: string;
-        handler: string;
-        status: string;
-    };
-    DATA?: {
-        username?: string;
-        keys?: string;
-        passphrase?: string;
-        otp?: string;
-        apikey?: string;
-        logintype?: string;
-        token?: string;
+    ERRORCODES?: {
+        [code: string]: string;
     };
 }
+interface StoredSafeErrorResponse extends StoredSafeBaseResponse {
+    ERRORS: string[];
+    ERRORCODES: {
+        [code: string]: string;
+    };
+}
+interface StoredSafeLoginResponse extends StoredSafeBaseResponse {
+    DATA: {
+        username: string;
+        passphrase: string;
+        otp: string;
+        apikey: string;
+        logintype: string;
+    } | {
+        username: string;
+        passphrase: string;
+        apikey: string;
+        logintype: string;
+    } | {
+        username: string;
+        keys: string;
+    };
+    CALLINFO: BaseCallinfo & {
+        token: string;
+        fingerprint: string;
+        userid: string;
+        password: string;
+        userstatus: string;
+        username: string;
+        fullname: string;
+        timeout: number;
+        version: string;
+        filesupport: number;
+        audit: {
+            violations: [] | {
+                [key: string]: string;
+            };
+            warnings: [] | {
+                [key: string]: string;
+            };
+        };
+    };
+}
+interface StoredSafeTokenResponse extends StoredSafeBaseResponse {
+    CALLINFO: BaseCallinfo & {
+        token: string;
+        logout?: string;
+        vaultmembers?: {
+            email: string;
+            fullname: string;
+            groupstatus: string;
+            id: string;
+            status: string;
+            username: string;
+        }[];
+        message?: string;
+        objectid?: string;
+        calculated_status?: string;
+        user_created?: string;
+        users?: StoredSafeUser[];
+        statusbits?: {
+            userbits: {
+                [bit: string]: number;
+            };
+            vaultbits: {
+                [bit: string]: number;
+            };
+        };
+        policies?: {
+            id: string;
+            name: string;
+            rules: {
+                min_length?: number;
+                min_lowercase_chars?: number;
+                min_nonalphanumeric_chars?: number;
+                min_numeric_chars?: number;
+                min_uppercase_chars?: number;
+            };
+        }[];
+        version?: string;
+        passphrase?: string;
+        length?: string;
+        type?: string;
+    };
+    VAULTS?: StoredSafeVault[];
+    GROUP?: StoredSafeVault[];
+    OBJECTS?: StoredSafeObject[];
+    OBJECT?: StoredSafeObject[];
+    TEMPLATES?: StoredSafeTemplate[];
+    TEMPLATE?: StoredSafeTemplate[];
+    BREADCRUMB?: {
+        icon: string;
+        objectid: string;
+        objectname: string;
+    }[];
+}
+declare type StoredSafeResponse = (StoredSafeErrorResponse | StoredSafeLoginResponse | StoredSafeTokenResponse);
 export interface StoredSafePromise extends AxiosPromise<StoredSafeResponse> {
 }
 export declare enum LoginType {
@@ -102,23 +189,37 @@ declare class StoredSafe {
     apikey: string;
     token?: string;
     constructor(site: string, apikey: string, token?: string, version?: string);
-    authYubikey(username: string, passphrase: string, otp: string): StoredSafePromise;
-    authTotp(username: string, passphrase: string, otp: string): StoredSafePromise;
-    authSmartcard(username: string, passphrase: string, otp: string): StoredSafePromise;
+    loginYubikey(username: string, passphrase: string, otp: string): StoredSafePromise;
+    loginTotp(username: string, passphrase: string, otp: string): StoredSafePromise;
+    loginSmartcard(username: string, passphrase: string, otp: string): StoredSafePromise;
     logout(): StoredSafePromise;
     check(): StoredSafePromise;
-    vaultList(): StoredSafePromise;
+    listVaults(): StoredSafePromise;
     vaultObjects(id: string | number): StoredSafePromise;
-    vaultCreate(params: object): StoredSafePromise;
-    vaultEdit(id: string | number, params: object): StoredSafePromise;
-    vaultDelete(id: string | number): StoredSafePromise;
+    vaultMembers(id: string | number): StoredSafePromise;
+    createVault(params: object): StoredSafePromise;
+    editVault(id: string | number, params: object): StoredSafePromise;
+    deleteVault(id: string | number): StoredSafePromise;
     object(id: string | number, children?: boolean): StoredSafePromise;
-    objectDecrypt(id: string | number): StoredSafePromise;
-    objectCreate(params: object): StoredSafePromise;
-    objectEdit(id: string | number, params: object): StoredSafePromise;
-    objectDelete(id: string | number): StoredSafePromise;
+    decryptObject(id: string | number): StoredSafePromise;
+    createObject(params: object): StoredSafePromise;
+    editObject(id: string | number, params: object): StoredSafePromise;
+    deleteObject(id: string | number): StoredSafePromise;
     find(needle: string): StoredSafePromise;
-    templateList(): StoredSafePromise;
+    listTemplates(): StoredSafePromise;
     template(id: string | number): StoredSafePromise;
+    permissionBits(): StoredSafePromise;
+    passwordPolicies(): StoredSafePromise;
+    version(): StoredSafePromise;
+    generatePassword(params?: {
+        type?: 'pronouncable' | 'diceword' | 'opie' | 'secure' | 'pin';
+        length?: number;
+        language?: 'en_US' | 'sv_SE';
+        delimeter?: string;
+        words?: number;
+        min_char?: number;
+        max_char?: number;
+        policyid?: string;
+    }): StoredSafePromise;
 }
 export default StoredSafe;

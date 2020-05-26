@@ -5,7 +5,6 @@
   "main": "dist/index.js",
   "types": "dist/index.js",
   "scripts": {
-    "prepublish": "npm run build",
     "build": "tsc",
     "test": "jest"
   },

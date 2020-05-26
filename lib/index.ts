@@ -26,7 +26,8 @@ export interface StoredSafeObject {
 }
 
 export interface StoredSafeTemplate {
-  INFO: {
+  id: string;
+  info: {
     id: string;
     name: string;
     ico: string;
@@ -35,7 +36,7 @@ export interface StoredSafeTemplate {
     ed?: boolean;
     jp?: boolean;
   };
-  STRUCTURE: {
+  structure: {
     [field: string]: {
       translation: string;
       type: string;
@@ -50,47 +51,141 @@ export interface StoredSafeTemplate {
   };
 }
 
-export interface StoredSafeResponse {
-  GROUP?: {
-    [id: string]: StoredSafeVault;
+export interface StoredSafeUser {
+  email: string;
+  fingerprint: string;
+  fullname: string;
+  id: string;
+  otpprefix: string;
+  status: string;
+  username: string;
+}
+
+interface BaseCallinfo {
+  errorcodes: number;
+  errors: number;
+  general: string[];
+  handler: string;
+  status: string;
+}
+
+interface StoredSafeBaseResponse {
+  DATA: {
+    [key: string]: string | number | undefined;
   };
-  OBJECT?: {
-    [id: string]: StoredSafeObject;
+  HEADERS: {
+    [header: string]: string;
   };
-  TEMPLATESINFO?: {
-    [field: string]: StoredSafeTemplate;
-  };
-  TEMPLATE?: {
-    [field: string]: StoredSafeTemplate;
-  };
+  PARAMS: [];
+  CALLINFO: BaseCallinfo;
   ERRORS?: string[];
-  PARAMS: string[];
-  CALLINFO: {
-    ''?: string;
-    token?: string;
-    fingerprint?: string;
-    userid?: string;
-    password?: string;
-    userstatus?: string;
-    username?: string;
-    fullname?: string;
-    timeout?: number;
-    filesupport?: string;
-    message?: string;
-    objectid?: string;
-    handler: string;
-    status: string;
-  };
-  DATA?: {
-    username?: string;
-    keys?: string;
-    passphrase?: string;
-    otp?: string;
-    apikey?: string;
-    logintype?: string;
-    token?: string;
+  ERRORCODES?: { [code: string]: string };
+}
+
+interface StoredSafeErrorResponse extends StoredSafeBaseResponse {
+  ERRORS: string[];
+  ERRORCODES: {
+    [code: string]: string;
   };
 }
+
+interface StoredSafeLoginResponse extends StoredSafeBaseResponse {
+  DATA: { // Login TOTP
+    username: string;
+    passphrase: string;
+    otp: string;
+    apikey: string;
+    logintype: string;
+  } | { // Login SMC
+    username: string;
+    passphrase: string;
+    apikey: string;
+    logintype: string;
+  } | { // Login YubiKey
+    username: string;
+    keys: string;
+  };
+  CALLINFO: BaseCallinfo & {
+    token: string;
+    fingerprint: string;
+    userid: string;
+    password: string;
+    userstatus: string;
+    username: string;
+    fullname: string;
+    timeout: number;
+    version: string;
+    filesupport: number; // Docs say string
+    audit: {
+      violations: [] | {
+        [key: string]: string;
+      };
+      warnings: [] | {
+        [key: string]: string;
+      };
+    };
+  };
+}
+
+interface StoredSafeTokenResponse extends StoredSafeBaseResponse {
+  CALLINFO: BaseCallinfo & {
+    token: string;
+    logout?: string;
+    vaultmembers?: {
+      email: string;
+      fullname: string;
+      groupstatus: string;
+      id: string;
+      status: string;
+      username: string;
+    }[];
+    message?: string;
+    objectid?: string;
+    calculated_status?: string;
+    user_created?: string;
+    users?: StoredSafeUser[];
+    statusbits?: {
+      userbits: {
+        [bit: string]: number;
+      };
+      vaultbits: {
+        [bit: string]: number;
+      };
+    };
+    policies?: {
+      id: string;
+      name: string;
+      rules: {
+        min_length?: number;
+        min_lowercase_chars?: number;
+        min_nonalphanumeric_chars?: number;
+        min_numeric_chars?: number;
+        min_uppercase_chars?: number;
+      };
+    }[];
+    version?: string;
+    passphrase?: string;
+    length?: string;
+    type?: string;
+  };
+  VAULTS?: StoredSafeVault[];
+  GROUP?: StoredSafeVault[];
+  OBJECTS?: StoredSafeObject[];
+  OBJECT?: StoredSafeObject[];
+  TEMPLATES?: StoredSafeTemplate[];
+  TEMPLATE?: StoredSafeTemplate[];
+  BREADCRUMB?: {
+    icon: string;
+    objectid: string;
+    objectname: string;
+  }[];
+}
+
+type StoredSafeResponse = (
+  StoredSafeErrorResponse
+    | StoredSafeLoginResponse
+    | StoredSafeTokenResponse
+);
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface StoredSafePromise extends AxiosPromise<StoredSafeResponse> {}
@@ -120,7 +215,7 @@ class StoredSafe {
     this.token = token;
   }
 
-  authYubikey(
+  loginYubikey(
     username: string,
     passphrase: string,
     otp: string,
@@ -134,7 +229,7 @@ class StoredSafe {
     });
   }
 
-  authTotp(
+  loginTotp(
     username: string,
     passphrase: string,
     otp: string,
@@ -151,7 +246,7 @@ class StoredSafe {
     });
   }
 
-  authSmartcard(
+  loginSmartcard(
     username: string,
     passphrase: string,
     otp: string,
@@ -170,7 +265,7 @@ class StoredSafe {
 
   logout(): StoredSafePromise {
     return this.axios.get('/auth/logout', {
-      params: { token: this.token },
+      headers: { 'X-Http-Token': this.token },
     }).then(response => {
       this.token = undefined;
       return response;
@@ -178,14 +273,14 @@ class StoredSafe {
   }
 
   check(): StoredSafePromise {
-    return this.axios.post('/auth/check', {
-      token: this.token
+    return this.axios.post('/auth/check', {}, {
+      headers: { 'X-Http-Token': this.token },
     });
   }
 
-  vaultList(): StoredSafePromise {
+  listVaults(): StoredSafePromise {
     return this.axios.get('/vault', {
-      params: { token: this.token },
+      headers: { 'X-Http-Token': this.token },
     });
   }
 
@@ -193,34 +288,44 @@ class StoredSafe {
     id: string | number,
   ): StoredSafePromise {
     return this.axios.get(`/vault/${id}`, {
-      params: { token: this.token },
+      headers: { 'X-Http-Token': this.token },
     });
   }
 
-  vaultCreate(
+  vaultMembers(
+    id: string | number,
+  ): StoredSafePromise {
+    return this.axios.get(`/vault/${id}/members`, {
+      headers: { 'X-Http-Token': this.token },
+    });
+  }
+
+  createVault(
     params: object
   ): StoredSafePromise {
     return this.axios.post('/vault', {
       ...params,
-      token: this.token,
+    }, {
+      headers: { 'X-Http-Token': this.token },
     });
   }
 
-  vaultEdit(
+  editVault(
     id: string | number,
     params: object,
   ): StoredSafePromise {
     return this.axios.put(`/vault/${id}`, {
       ...params,
-      token: this.token,
+    }, {
+      headers: { 'X-Http-Token': this.token },
     });
   }
 
-  vaultDelete(
+  deleteVault(
     id: string | number,
   ): StoredSafePromise {
     return this.axios.delete(`/vault/${id}`, {
-      params: { token: this.token },
+      headers: { 'X-Http-Token': this.token },
     });
   }
 
@@ -229,42 +334,46 @@ class StoredSafe {
     children=false,
   ): StoredSafePromise {
     return this.axios.get(`/object/${id}`, {
-      params: { token: this.token, children: children },
+      params: { children: children },
+      headers: { 'X-Http-Token': this.token },
     });
   }
 
-  objectDecrypt(
+  decryptObject(
     id: string | number,
   ): StoredSafePromise {
     return this.axios.get(`/object/${id}`, {
-      params: { token: this.token, decrypt: true },
+      params: { decrypt: true },
+      headers: { 'X-Http-Token': this.token },
     });
   }
 
-  objectCreate(
+  createObject(
     params: object,
   ): StoredSafePromise {
     return this.axios.post('/object', {
       ...params,
-      token: this.token,
+    }, {
+      headers: { 'X-Http-Token': this.token },
     });
   }
 
-  objectEdit(
+  editObject(
     id: string | number,
     params: object,
   ): StoredSafePromise {
     return this.axios.put(`/object/${id}`, {
       ...params,
-      token: this.token,
+    }, {
+      headers: { 'X-Http-Token': this.token },
     });
   }
 
-  objectDelete(
+  deleteObject(
     id: string | number,
   ): StoredSafePromise {
     return this.axios.delete(`/object/${id}`, {
-      params: { token: this.token },
+      headers: { 'X-Http-Token': this.token },
     });
   }
 
@@ -272,13 +381,14 @@ class StoredSafe {
     needle: string
   ): StoredSafePromise {
     return this.axios.get('/find', {
-      params: { token: this.token, needle: needle },
+      params: { needle: needle },
+      headers: { 'X-Http-Token': this.token },
     });
   }
 
-  templateList(): StoredSafePromise {
+  listTemplates(): StoredSafePromise {
     return this.axios.get('/template', {
-      params: { token: this.token },
+      headers: { 'X-Http-Token': this.token },
     });
   }
 
@@ -286,7 +396,41 @@ class StoredSafe {
     id: string | number,
   ): StoredSafePromise {
     return this.axios.get(`/template/${id}`, {
-      params: { token: this.token },
+      headers: { 'X-Http-Token': this.token },
+    });
+  }
+
+  permissionBits(): StoredSafePromise {
+    return this.axios.get('/utils/statusvalues', {
+      headers: { 'X-Http-Token': this.token },
+    });
+  }
+
+  passwordPolicies(): StoredSafePromise {
+    return this.axios.get('/utils/policies', {
+      headers: { 'X-Http-Token': this.token },
+    });
+  }
+
+  version(): StoredSafePromise {
+    return this.axios.get('/utils/version', {
+      headers: { 'X-Http-Token': this.token },
+    });
+  }
+
+  generatePassword(params: {
+    type?: 'pronouncable' | 'diceword' | 'opie' | 'secure' | 'pin';
+    length?: number;
+    language?: 'en_US' | 'sv_SE';
+    delimeter?: string;
+    words?: number;
+    min_char?: number;
+    max_char?: number;
+    policyid?: string;
+  } = {}): StoredSafePromise {
+    return this.axios.get('utils/pwgen', {
+      headers: { 'X-Http-Token': this.token },
+      params,
     });
   }
 }

@@ -30,7 +30,7 @@ var StoredSafe = /** @class */ (function () {
         this.apikey = apikey;
         this.token = token;
     }
-    StoredSafe.prototype.authYubikey = function (username, passphrase, otp) {
+    StoredSafe.prototype.loginYubikey = function (username, passphrase, otp) {
         var _this = this;
         return this.axios.post('/auth', {
             username: username,
@@ -40,7 +40,7 @@ var StoredSafe = /** @class */ (function () {
             return response;
         });
     };
-    StoredSafe.prototype.authTotp = function (username, passphrase, otp) {
+    StoredSafe.prototype.loginTotp = function (username, passphrase, otp) {
         var _this = this;
         return this.axios.post('/auth', {
             username: username,
@@ -53,7 +53,7 @@ var StoredSafe = /** @class */ (function () {
             return response;
         });
     };
-    StoredSafe.prototype.authSmartcard = function (username, passphrase, otp) {
+    StoredSafe.prototype.loginSmartcard = function (username, passphrase, otp) {
         var _this = this;
         return this.axios.post('/auth', {
             username: username,
@@ -69,73 +69,111 @@ var StoredSafe = /** @class */ (function () {
     StoredSafe.prototype.logout = function () {
         var _this = this;
         return this.axios.get('/auth/logout', {
-            params: { token: this.token },
+            headers: { 'X-Http-Token': this.token },
         }).then(function (response) {
             _this.token = undefined;
             return response;
         });
     };
     StoredSafe.prototype.check = function () {
-        return this.axios.post('/auth/check', {
-            token: this.token
+        return this.axios.post('/auth/check', {}, {
+            headers: { 'X-Http-Token': this.token },
         });
     };
-    StoredSafe.prototype.vaultList = function () {
+    StoredSafe.prototype.listVaults = function () {
         return this.axios.get('/vault', {
-            params: { token: this.token },
+            headers: { 'X-Http-Token': this.token },
         });
     };
     StoredSafe.prototype.vaultObjects = function (id) {
         return this.axios.get("/vault/" + id, {
-            params: { token: this.token },
+            headers: { 'X-Http-Token': this.token },
         });
     };
-    StoredSafe.prototype.vaultCreate = function (params) {
-        return this.axios.post('/vault', __assign(__assign({}, params), { token: this.token }));
+    StoredSafe.prototype.vaultMembers = function (id) {
+        return this.axios.get("/vault/" + id + "/members", {
+            headers: { 'X-Http-Token': this.token },
+        });
     };
-    StoredSafe.prototype.vaultEdit = function (id, params) {
-        return this.axios.put("/vault/" + id, __assign(__assign({}, params), { token: this.token }));
+    StoredSafe.prototype.createVault = function (params) {
+        return this.axios.post('/vault', __assign({}, params), {
+            headers: { 'X-Http-Token': this.token },
+        });
     };
-    StoredSafe.prototype.vaultDelete = function (id) {
+    StoredSafe.prototype.editVault = function (id, params) {
+        return this.axios.put("/vault/" + id, __assign({}, params), {
+            headers: { 'X-Http-Token': this.token },
+        });
+    };
+    StoredSafe.prototype.deleteVault = function (id) {
         return this.axios.delete("/vault/" + id, {
-            params: { token: this.token },
+            headers: { 'X-Http-Token': this.token },
         });
     };
     StoredSafe.prototype.object = function (id, children) {
         if (children === void 0) { children = false; }
         return this.axios.get("/object/" + id, {
-            params: { token: this.token, children: children },
+            params: { children: children },
+            headers: { 'X-Http-Token': this.token },
         });
     };
-    StoredSafe.prototype.objectDecrypt = function (id) {
+    StoredSafe.prototype.decryptObject = function (id) {
         return this.axios.get("/object/" + id, {
-            params: { token: this.token, decrypt: true },
+            params: { decrypt: true },
+            headers: { 'X-Http-Token': this.token },
         });
     };
-    StoredSafe.prototype.objectCreate = function (params) {
-        return this.axios.post('/object', __assign(__assign({}, params), { token: this.token }));
+    StoredSafe.prototype.createObject = function (params) {
+        return this.axios.post('/object', __assign({}, params), {
+            headers: { 'X-Http-Token': this.token },
+        });
     };
-    StoredSafe.prototype.objectEdit = function (id, params) {
-        return this.axios.put("/object/" + id, __assign(__assign({}, params), { token: this.token }));
+    StoredSafe.prototype.editObject = function (id, params) {
+        return this.axios.put("/object/" + id, __assign({}, params), {
+            headers: { 'X-Http-Token': this.token },
+        });
     };
-    StoredSafe.prototype.objectDelete = function (id) {
+    StoredSafe.prototype.deleteObject = function (id) {
         return this.axios.delete("/object/" + id, {
-            params: { token: this.token },
+            headers: { 'X-Http-Token': this.token },
         });
     };
     StoredSafe.prototype.find = function (needle) {
         return this.axios.get('/find', {
-            params: { token: this.token, needle: needle },
+            params: { needle: needle },
+            headers: { 'X-Http-Token': this.token },
         });
     };
-    StoredSafe.prototype.templateList = function () {
+    StoredSafe.prototype.listTemplates = function () {
         return this.axios.get('/template', {
-            params: { token: this.token },
+            headers: { 'X-Http-Token': this.token },
         });
     };
     StoredSafe.prototype.template = function (id) {
         return this.axios.get("/template/" + id, {
-            params: { token: this.token },
+            headers: { 'X-Http-Token': this.token },
+        });
+    };
+    StoredSafe.prototype.permissionBits = function () {
+        return this.axios.get('/utils/statusvalues', {
+            headers: { 'X-Http-Token': this.token },
+        });
+    };
+    StoredSafe.prototype.passwordPolicies = function () {
+        return this.axios.get('/utils/policies', {
+            headers: { 'X-Http-Token': this.token },
+        });
+    };
+    StoredSafe.prototype.version = function () {
+        return this.axios.get('/utils/version', {
+            headers: { 'X-Http-Token': this.token },
+        });
+    };
+    StoredSafe.prototype.generatePassword = function (params) {
+        if (params === void 0) { params = {}; }
+        return this.axios.get('utils/pwgen', {
+            headers: { 'X-Http-Token': this.token },
+            params: params,
         });
     };
     return StoredSafe;
