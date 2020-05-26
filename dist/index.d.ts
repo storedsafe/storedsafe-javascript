@@ -177,7 +177,7 @@ interface StoredSafeTokenResponse extends StoredSafeBaseResponse {
         objectname: string;
     }[];
 }
-declare type StoredSafeResponse = (StoredSafeErrorResponse | StoredSafeLoginResponse | StoredSafeTokenResponse);
+export declare type StoredSafeResponse = (StoredSafeErrorResponse | StoredSafeLoginResponse | StoredSafeTokenResponse);
 export interface StoredSafePromise extends AxiosPromise<StoredSafeResponse> {
 }
 export declare enum LoginType {

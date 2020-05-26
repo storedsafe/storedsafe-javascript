@@ -1,6 +1,6 @@
 {
   "name": "storedsafe",
-  "version": "0.0.3-2",
+  "version": "0.0.4",
   "description": "JavaScript bindings for the StoredSafe REST-like API.",
   "main": "dist/index.js",
   "types": "dist/index.js",

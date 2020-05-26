@@ -181,7 +181,7 @@ interface StoredSafeTokenResponse extends StoredSafeBaseResponse {
   }[];
 }
 
-type StoredSafeResponse = (
+export type StoredSafeResponse = (
   StoredSafeErrorResponse
     | StoredSafeLoginResponse
     | StoredSafeTokenResponse
