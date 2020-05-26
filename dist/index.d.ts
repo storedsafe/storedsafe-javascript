@@ -60,14 +60,7 @@ export interface StoredSafeUser {
     status: string;
     username: string;
 }
-interface BaseCallinfo {
-    errorcodes: number;
-    errors: number;
-    general: string[];
-    handler: string;
-    status: string;
-}
-interface StoredSafeBaseResponse {
+export interface StoredSafeResponse {
     DATA: {
         [key: string]: string | number | undefined;
     };
@@ -75,46 +68,26 @@ interface StoredSafeBaseResponse {
         [header: string]: string;
     };
     PARAMS: [];
-    CALLINFO: BaseCallinfo;
     ERRORS?: string[];
     ERRORCODES?: {
         [code: string]: string;
     };
-}
-interface StoredSafeErrorResponse extends StoredSafeBaseResponse {
-    ERRORS: string[];
-    ERRORCODES: {
-        [code: string]: string;
-    };
-}
-interface StoredSafeLoginResponse extends StoredSafeBaseResponse {
-    DATA: {
-        username: string;
-        passphrase: string;
-        otp: string;
-        apikey: string;
-        logintype: string;
-    } | {
-        username: string;
-        passphrase: string;
-        apikey: string;
-        logintype: string;
-    } | {
-        username: string;
-        keys: string;
-    };
-    CALLINFO: BaseCallinfo & {
-        token: string;
-        fingerprint: string;
-        userid: string;
-        password: string;
-        userstatus: string;
-        username: string;
-        fullname: string;
-        timeout: number;
-        version: string;
-        filesupport: number;
-        audit: {
+    CALLINFO: {
+        errorcodes: number;
+        errors: number;
+        general: string[];
+        handler: string;
+        status: string;
+        token?: string;
+        fingerprint?: string;
+        userid?: string;
+        password?: string;
+        userstatus?: string;
+        username?: string;
+        fullname?: string;
+        timeout?: number;
+        filesupport?: number;
+        audit?: {
             violations: [] | {
                 [key: string]: string;
             };
@@ -122,12 +95,6 @@ interface StoredSafeLoginResponse extends StoredSafeBaseResponse {
                 [key: string]: string;
             };
         };
-    };
-}
-interface StoredSafeTokenResponse extends StoredSafeBaseResponse {
-    CALLINFO: BaseCallinfo & {
-        token: string;
-        logout?: string;
         vaultmembers?: {
             email: string;
             fullname: string;
@@ -177,7 +144,6 @@ interface StoredSafeTokenResponse extends StoredSafeBaseResponse {
         objectname: string;
     }[];
 }
-export declare type StoredSafeResponse = (StoredSafeErrorResponse | StoredSafeLoginResponse | StoredSafeTokenResponse);
 export interface StoredSafePromise extends AxiosPromise<StoredSafeResponse> {
 }
 export declare enum LoginType {
