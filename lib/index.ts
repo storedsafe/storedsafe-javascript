@@ -100,6 +100,7 @@ export interface StoredSafeResponse {
     fullname?: string;
     timeout?: number;
     filesupport?: number; // Docs say string
+    logout?: string;
     audit?: {
       violations: [] | {
         [key: string]: string;
