@@ -10,6 +10,16 @@ export interface StoredSafeVault {
 }
 
 export interface StoredSafeObject {
+  fileinfo?: {
+    objectid: string;
+    name: string;
+    size: string;
+    type: string;
+    filepath: string;
+    created: string;
+    ext: string;
+    iconpath: string;
+  };
   id: string;
   parentid: string;
   templateid: string;
