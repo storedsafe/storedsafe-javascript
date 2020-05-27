@@ -37,18 +37,18 @@ export interface StoredSafeTemplate {
     jp?: boolean;
   };
   structure: {
-    [field: string]: {
-      translation: string;
-      type: string;
-      encrypted: boolean;
-      show: boolean;
-      policy: boolean;
-      alarm: boolean;
-      opt: boolean;
-      cc: boolean;
-      nc: boolean;
-    };
-  };
+    translation: string;
+    type: string;
+    encrypted: boolean;
+    show: boolean;
+    policy: boolean;
+    alarm: boolean;
+    opt: boolean;
+    cc: boolean;
+    nc: boolean;
+    log?: boolean;
+    fieldname: string;
+  }[];
 }
 
 export interface StoredSafeUser {
