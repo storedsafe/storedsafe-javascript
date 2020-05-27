@@ -45,6 +45,7 @@ export interface StoredSafeTemplate {
     wb: boolean;
     ed?: boolean;
     jp?: boolean;
+    file?: string;
   };
   structure: {
     translation: string;
