@@ -47,6 +47,9 @@ export interface StoredSafeTemplate {
     cc: boolean;
     nc: boolean;
     log?: boolean;
+    options?: string[];
+    options_default?: string;
+    placeholder?: string;
     fieldname: string;
   }[];
 }
@@ -59,9 +62,6 @@ export interface StoredSafeUser {
   otpprefix: string;
   status: string;
   username: string;
-}
-
-interface BaseCallinfo {
 }
 
 export interface StoredSafeResponse {
