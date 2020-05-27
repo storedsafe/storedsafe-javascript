@@ -147,7 +147,7 @@ export interface StoredSafeResponse {
         type?: string;
     };
     VAULTS?: StoredSafeVault[];
-    GROUP?: StoredSafeVault[];
+    VAULT?: StoredSafeVault[];
     OBJECTS?: StoredSafeObject[];
     OBJECT?: StoredSafeObject[];
     TEMPLATES?: StoredSafeTemplate[];
