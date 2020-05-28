@@ -49,7 +49,7 @@ storedsafe.decryptObject('42')
 ```
 
 ### Method signatures
-```javascript
+```typescript
 constructor(site: string, apikey: string, token: string = null, version: string ='1.0')
 loginYubikey(username: string, passphrase: string, otp: string)
 loginTotp(username: string, passphrase: string, otp: string)
