@@ -2,7 +2,7 @@
 JavaScript bindings for the StoredSafe RESTlike API. All methods are completely transparent and built on top of axios. This means the return value is the Promise returned by axios. No parsing is done whatsoever beyond saving the token returned by authentication requests for convenience.
 
 ## Usage
-The structure of the returned data is described in the [StoredSafe RESTlike API](https://tracker.storedsafe.com/projects/storedsafe20/wiki/Version_10_release_documentation) documentation.
+The structure of the returned data is described in the [StoredSafe RESTlike API](https://developer.storedsafe.com) documentation.
 For learning more about the Promise-based return values, look at the [axios](https://github.com/axios/axios) documentation.
 
 ### Authentication
@@ -11,7 +11,7 @@ const StoredSafe = require('storedsafe');
 const storedsafe = new StoredSafe('vault.my-storedsafe-site.com', 'my-api-key');
 
 // token gets saved in StoredSafe object on successful request
-storedsafe.authYubikey(username, passphrase, otp)
+storedsafe.loginYubikey(username, passphrase, otp)
   .then(res => res.data)
   .then(data => {
     const token = data.CALLINFO.token;
@@ -34,10 +34,10 @@ const storedsafe = new StoredSafe(
   'my-token'
 );
 
-storedsafe.objectDecrypt(42)
+storedsafe.decryptObject('42')
   .then(res => res.data)
   .then(data => {
-    const secret = data.OBJECT[42].crypted;
+    const secret = data.OBJECT.find((obj) => obj.id === '42').crypted;
     console.log(secret);
   }).catch(error) => {
     if (error.response.stats === 403) {
@@ -50,23 +50,37 @@ storedsafe.objectDecrypt(42)
 
 ### Method signatures
 ```javascript
-constructor(site, apikey, token=null, version='1.0') {}
-authYubikey(username, passphrase, otp) {}
-authTotp(username, passphrase, otp) {}
-authSmartcard(username, passphrase, otp) {}
-logout() {}
-check() {}
-vaultList() {}
-vaultObjects(id) {}
-vaultCreate(params) {}
-vaultEdit(id, params) {}
-vaultDelete(id) {}
-object(id, children=false) {}
-objectDecrypt(id) {}
-objectCreate(params) {}
-objectEdit(id, params) {}
-objectDelete(id) {}
-find(needle) {}
-templateList() {}
-template(id) {}
+constructor(site: string, apikey: string, token: string = null, version: string ='1.0')
+loginYubikey(username: string, passphrase: string, otp: string)
+loginTotp(username: string, passphrase: string, otp: string)
+loginSmartcard(username: string, passphrase: string, otp: string)
+logout()
+check()
+listVaults()
+vaultObjects(id: string | number)
+vaultMembers(id: string | number)
+createVault(params: object)
+editVault(id: string | number, params: object)
+deleteVault(id: string | number)
+object(id: string | number, children=false)
+decryptObject(id: string | number)
+createObject(params: object)
+editObject(id: string | number, params: object)
+deleteObject(id: string | number)
+find(needle: string)
+listTemplates()
+template(id: string | number)
+permissionBits()
+passwordPolicies()
+version()
+generatePassword(params: {
+  type?: 'pronouncable' | 'diceword' | 'opie' | 'secure' | 'pin';
+  length?: number;
+  language?: 'en_US' | 'sv_SE';
+  delimeter?: string;
+  words?: number;
+  min_char?: number;
+  max_char?: number;
+  policyid?: string;
+} = {})
 ```
