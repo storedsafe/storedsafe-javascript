@@ -21,10 +21,11 @@ var LoginType;
     LoginType["SMARTCARD"] = "smc_rest";
 })(LoginType = exports.LoginType || (exports.LoginType = {}));
 var StoredSafe = /** @class */ (function () {
-    function StoredSafe(site, apikey, token, version) {
+    function StoredSafe(_a, version) {
+        var host = _a.host, apikey = _a.apikey, token = _a.token;
         if (version === void 0) { version = '1.0'; }
         this.axios = axios_1.default.create({
-            baseURL: "https://" + site + "/api/" + version + "/",
+            baseURL: "https://" + host + "/api/" + version + "/",
             timeout: 5000,
         });
         this.apikey = apikey;

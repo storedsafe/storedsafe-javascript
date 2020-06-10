@@ -167,9 +167,13 @@ export declare enum LoginType {
 }
 declare class StoredSafe {
     private axios;
-    apikey: string;
+    apikey?: string;
     token?: string;
-    constructor(site: string, apikey: string, token?: string, version?: string);
+    constructor({ host, apikey, token }: {
+        host: string;
+        apikey?: string;
+        token?: string;
+    }, version?: string);
     loginYubikey(username: string, passphrase: string, otp: string): StoredSafePromise;
     loginTotp(username: string, passphrase: string, otp: string): StoredSafePromise;
     loginSmartcard(username: string, passphrase: string, otp: string): StoredSafePromise;

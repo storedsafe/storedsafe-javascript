@@ -170,17 +170,18 @@ export enum LoginType {
 class StoredSafe {
   private axios: AxiosInstance;
 
-  apikey: string;
+  apikey?: string;
   token?: string;
 
-  constructor(
-    site: string,
-    apikey: string,
-    token?: string,
+  constructor({ host, apikey, token }: {
+    host: string;
+    apikey?: string;
+    token?: string;
+  },
     version='1.0'
   ) {
     this.axios = axios.create({
-      baseURL: `https://${site}/api/${version}/`,
+      baseURL: `https://${host}/api/${version}/`,
       timeout: 5000,
     });
     this.apikey = apikey;
