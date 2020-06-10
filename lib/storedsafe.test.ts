@@ -7,11 +7,11 @@ nock.disableNetConnect();
 import StoredSafe, { LoginType } from './';
 
 // Sample StoredSafe configuration
-const site = 'example.storedsafe.com';
+const host = 'example.storedsafe.com';
 const apikey = 'A1B2C3D4';
 const token = 'abcde12345';
 const version = '1.0';
-const url = `https://${site}/api/${version}/`;
+const url = `https://${host}/api/${version}/`;
 
 // Sample credentials
 const username = 'JohnDoe';
@@ -36,7 +36,7 @@ let storedsafe: StoredSafe;
 
 describe("before authentication", () => {
   beforeEach(() => {
-    storedsafe = new StoredSafe(site, apikey);
+    storedsafe = new StoredSafe({ host, apikey });
   });
 
   test(".loginYubikey, sets token", () => {
@@ -90,7 +90,7 @@ describe("before authentication", () => {
 
 describe("after authentication", () => {
   beforeEach(() => {
-    storedsafe = new StoredSafe(site, apikey, token);
+    storedsafe = new StoredSafe({ host, token });
   });
 
   describe("/auth", () => {

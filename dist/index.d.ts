@@ -174,6 +174,8 @@ declare class StoredSafe {
         apikey?: string;
         token?: string;
     }, version?: string);
+    private assertApikeyExists;
+    private assertTokenExists;
     loginYubikey(username: string, passphrase: string, otp: string): StoredSafePromise;
     loginTotp(username: string, passphrase: string, otp: string): StoredSafePromise;
     loginSmartcard(username: string, passphrase: string, otp: string): StoredSafePromise;
