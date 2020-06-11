@@ -65,6 +65,37 @@ export interface StoredSafeTemplate {
   }[];
 }
 
+export interface StoredSafeLegacyTemplate {
+  INFO: {
+    id: string;
+    name: string;
+    ico: string;
+    active: boolean;
+    wb: boolean;
+    ed?: boolean;
+    jp?: boolean;
+    file?: string;
+  };
+  STRUCTURE: {
+    [field: string]: {
+      translation: string;
+      type: string;
+      encrypted: boolean;
+      show: boolean;
+      policy: boolean;
+      alarm: boolean;
+      opt: boolean;
+      cc: boolean;
+      nc: boolean;
+      log?: boolean;
+      options?: string[];
+      options_default?: string;
+      placeholder?: string;
+      fieldname: string;
+    };
+  };
+}
+
 export interface StoredSafeUser {
   email: string;
   fingerprint: string;
@@ -151,7 +182,7 @@ export interface StoredSafeResponse {
   OBJECTS?: StoredSafeObject[];
   OBJECT?: StoredSafeObject[];
   TEMPLATES?: StoredSafeTemplate[];
-  TEMPLATE?: StoredSafeTemplate[];
+  TEMPLATE?: StoredSafeLegacyTemplate[];
   BREADCRUMB?: {
     icon: string;
     objectid: string;
