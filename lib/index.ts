@@ -15,6 +15,14 @@ import {
 } from './types'
 
 export {
+  StoredSafeVault,
+  StoredSafeUser,
+  StoredSafeTemplate,
+  StoredSafeLegacyTemplate,
+  StoredSafeObject
+} from './types'
+
+export {
   StoredSafeData,
   StoredSafeErrorData,
   StoredSafeLoginData,
