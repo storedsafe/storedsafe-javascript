@@ -1,4 +1,4 @@
-import axios, { AxiosInstance, AxiosPromise } from 'axios';
+import axios, { AxiosInstance, AxiosPromise, AxiosResponse, AxiosError } from 'axios';
 
 export interface StoredSafeVault {
   id: string;
@@ -106,7 +106,7 @@ export interface StoredSafeUser {
   username: string;
 }
 
-export interface StoredSafeResponse {
+export interface StoredSafeData {
   DATA: {
     [key: string]: string | number | undefined;
   };
@@ -191,7 +191,11 @@ export interface StoredSafeResponse {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface StoredSafePromise extends AxiosPromise<StoredSafeResponse> {}
+export interface StoredSafeResponse extends AxiosResponse<StoredSafeData> {}
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface StoredSafePromise extends AxiosPromise<StoredSafeData> {}
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface StoredSafeError extends AxiosError<StoredSafeResponse> {}
 
 export enum LoginType {
   TOTP = 'totp',

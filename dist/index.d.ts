@@ -1,4 +1,4 @@
-import { AxiosPromise } from 'axios';
+import { AxiosPromise, AxiosResponse, AxiosError } from 'axios';
 export interface StoredSafeVault {
     id: string;
     groupname: string;
@@ -104,7 +104,7 @@ export interface StoredSafeUser {
     status: string;
     username: string;
 }
-export interface StoredSafeResponse {
+export interface StoredSafeData {
     DATA: {
         [key: string]: string | number | undefined;
     };
@@ -189,7 +189,11 @@ export interface StoredSafeResponse {
         objectname: string;
     }[];
 }
-export interface StoredSafePromise extends AxiosPromise<StoredSafeResponse> {
+export interface StoredSafeResponse extends AxiosResponse<StoredSafeData> {
+}
+export interface StoredSafePromise extends AxiosPromise<StoredSafeData> {
+}
+export interface StoredSafeError extends AxiosError<StoredSafeResponse> {
 }
 export declare enum LoginType {
     TOTP = "totp",
