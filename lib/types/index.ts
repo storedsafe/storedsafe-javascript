@@ -137,8 +137,12 @@ export interface StoredSafeErrorData extends StoredSafeData {
 export interface StoredSafeLoginData extends StoredSafeData {
   CALLINFO: {
     audit: {
-      violations: string[];
-      warnings: string[];
+      violations: [] | {
+        [key: string]: string;
+      };
+      warnings: [] | {
+        [key: string]: string;
+      };
     };
     errorcodes: number;
     errors: number;
