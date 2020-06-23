@@ -68,24 +68,6 @@ describe("before authentication", () => {
       expect(storedsafe.token).toBe(token);
     });
   });
-
-  test(".loginSmartcard, sets token", () => {
-    nock(url)
-    .post('/auth', {
-      username: username,
-      passphrase: passphrase,
-      otp: otp,
-      apikey: apikey,
-      logintype: LoginType.SMARTCARD,
-    })
-    .reply(200, replySuccess);
-    return storedsafe.loginSmartcard(
-      username, passphrase, otp
-    ).then(res => {
-      expect(res.status).toBe(200);
-      expect(storedsafe.token).toBe(token);
-    });
-  });
 });
 
 describe("after authentication", () => {

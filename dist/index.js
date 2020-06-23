@@ -66,20 +66,6 @@ var StoredSafe = /** @class */ (function () {
             return response;
         });
     };
-    StoredSafe.prototype.loginSmartcard = function (username, passphrase, otp) {
-        var _this = this;
-        this.assertApikeyExists();
-        return this.axios.post('/auth', {
-            username: username,
-            passphrase: passphrase,
-            otp: otp,
-            logintype: LoginType.SMARTCARD,
-            apikey: this.apikey,
-        }).then(function (response) {
-            _this.token = response.data.CALLINFO.token;
-            return response;
-        });
-    };
     StoredSafe.prototype.logout = function () {
         var _this = this;
         this.assertTokenExists();
