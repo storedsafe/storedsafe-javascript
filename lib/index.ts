@@ -195,7 +195,7 @@ export interface StoredSafeResponse extends AxiosResponse<StoredSafeData> {}
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface StoredSafePromise extends AxiosPromise<StoredSafeData> {}
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface StoredSafeError extends AxiosError<StoredSafeResponse> {}
+export interface StoredSafeError extends AxiosError<StoredSafeData> {}
 
 export enum LoginType {
   TOTP = 'totp',

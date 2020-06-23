@@ -193,7 +193,7 @@ export interface StoredSafeResponse extends AxiosResponse<StoredSafeData> {
 }
 export interface StoredSafePromise extends AxiosPromise<StoredSafeData> {
 }
-export interface StoredSafeError extends AxiosError<StoredSafeResponse> {
+export interface StoredSafeError extends AxiosError<StoredSafeData> {
 }
 export declare enum LoginType {
     TOTP = "totp",
