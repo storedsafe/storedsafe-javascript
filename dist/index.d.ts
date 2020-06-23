@@ -1,5 +1,6 @@
 import { AxiosPromise, AxiosResponse, AxiosError } from 'axios';
 import { StoredSafeData, StoredSafeErrorData, StoredSafeLoginData, StoredSafeLogoutData, StoredSafeCheckData, StoredSafeOtherData } from './types';
+export { StoredSafeData, StoredSafeErrorData, StoredSafeLoginData, StoredSafeLogoutData, StoredSafeCheckData, StoredSafeOtherData };
 export interface StoredSafeResponse<T extends StoredSafeData> extends AxiosResponse<T> {
 }
 export interface StoredSafePromise<T extends StoredSafeData> extends AxiosPromise<T> {
