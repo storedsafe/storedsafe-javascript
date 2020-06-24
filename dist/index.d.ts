@@ -1,7 +1,7 @@
 import { AxiosPromise, AxiosResponse, AxiosError } from 'axios';
-import { StoredSafeData, StoredSafeErrorData, StoredSafeLoginData, StoredSafeLogoutData, StoredSafeCheckData, StoredSafeOtherData } from './types';
-export { StoredSafeVault, StoredSafeUser, StoredSafeTemplate, StoredSafeLegacyTemplate, StoredSafeObject } from './types';
-export { StoredSafeData, StoredSafeErrorData, StoredSafeLoginData, StoredSafeLogoutData, StoredSafeCheckData, StoredSafeOtherData };
+import { StoredSafeData, StoredSafeErrorData, StoredSafeLoginData, StoredSafeLogoutData, StoredSafeVaultData, StoredSafeVaultObjectsData, StoredSafeVaultMembersData, StoredSafeVaultsData, StoredSafeObjectData, StoredSafeCreateObjectData, StoredSafeTemplatesData, StoredSafeTemplateData, StoredSafeStatusValuesData, StoredSafePasswordData, StoredSafePoliciesData, StoredSafeVersionData } from './types';
+export { StoredSafeVault, StoredSafeUser, StoredSafeTemplate, StoredSafeLegacyTemplate, StoredSafeObject, StoredSafeVaultMember } from './types';
+export { StoredSafeData, StoredSafeErrorData, StoredSafeLoginData, StoredSafeLogoutData, };
 export interface StoredSafeResponse<T extends StoredSafeData> extends AxiosResponse<T> {
 }
 export interface StoredSafePromise<T extends StoredSafeData> extends AxiosPromise<T> {
@@ -26,24 +26,24 @@ declare class StoredSafe {
     loginYubikey(username: string, passphrase: string, otp: string): StoredSafePromise<StoredSafeLoginData>;
     loginTotp(username: string, passphrase: string, otp: string): StoredSafePromise<StoredSafeLoginData>;
     logout(): StoredSafePromise<StoredSafeLogoutData>;
-    check(): StoredSafePromise<StoredSafeCheckData>;
-    listVaults(): StoredSafePromise<StoredSafeOtherData>;
-    vaultObjects(id: string | number): StoredSafePromise<StoredSafeOtherData>;
-    vaultMembers(id: string | number): StoredSafePromise<StoredSafeOtherData>;
-    createVault(params: object): StoredSafePromise<StoredSafeOtherData>;
-    editVault(id: string | number, params: object): StoredSafePromise<StoredSafeOtherData>;
-    deleteVault(id: string | number): StoredSafePromise<StoredSafeOtherData>;
-    object(id: string | number, children?: boolean): StoredSafePromise<StoredSafeOtherData>;
-    decryptObject(id: string | number): StoredSafePromise<StoredSafeOtherData>;
-    createObject(params: object): StoredSafePromise<StoredSafeOtherData>;
-    editObject(id: string | number, params: object): StoredSafePromise<StoredSafeOtherData>;
-    deleteObject(id: string | number): StoredSafePromise<StoredSafeOtherData>;
-    find(needle: string): StoredSafePromise<StoredSafeOtherData>;
-    listTemplates(): StoredSafePromise<StoredSafeOtherData>;
-    template(id: string | number): StoredSafePromise<StoredSafeOtherData>;
-    permissionBits(): StoredSafePromise<StoredSafeOtherData>;
-    passwordPolicies(): StoredSafePromise<StoredSafeOtherData>;
-    version(): StoredSafePromise<StoredSafeOtherData>;
+    check(): StoredSafePromise<StoredSafeData>;
+    listVaults(): StoredSafePromise<StoredSafeVaultsData>;
+    vaultObjects(id: string | number): StoredSafePromise<StoredSafeVaultObjectsData>;
+    vaultMembers(id: string | number): StoredSafePromise<StoredSafeVaultMembersData>;
+    createVault(params: object): StoredSafePromise<StoredSafeVaultData>;
+    editVault(id: string | number, params: object): StoredSafePromise<StoredSafeVaultData>;
+    deleteVault(id: string | number): StoredSafePromise<StoredSafeData>;
+    getObject(id: string | number, children?: boolean): StoredSafePromise<StoredSafeObjectData>;
+    decryptObject(id: string | number): StoredSafePromise<StoredSafeObjectData>;
+    createObject(params: object): StoredSafePromise<StoredSafeCreateObjectData>;
+    editObject(id: string | number, params: object): StoredSafePromise<StoredSafeCreateObjectData>;
+    deleteObject(id: string | number): StoredSafePromise<StoredSafeData>;
+    find(needle: string): StoredSafePromise<StoredSafeObjectData>;
+    listTemplates(): StoredSafePromise<StoredSafeTemplatesData>;
+    getTemplate(id: string | number): StoredSafePromise<StoredSafeTemplateData>;
+    statusValues(): StoredSafePromise<StoredSafeStatusValuesData>;
+    passwordPolicies(): StoredSafePromise<StoredSafePoliciesData>;
+    version(): StoredSafePromise<StoredSafeVersionData>;
     generatePassword(params?: {
         type?: 'pronouncable' | 'diceword' | 'opie' | 'secure' | 'pin';
         length?: number;
@@ -53,6 +53,6 @@ declare class StoredSafe {
         min_char?: number;
         max_char?: number;
         policyid?: string;
-    }): StoredSafePromise<StoredSafeOtherData>;
+    }): StoredSafePromise<StoredSafePasswordData>;
 }
 export default StoredSafe;

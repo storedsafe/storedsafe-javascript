@@ -125,7 +125,7 @@ var StoredSafe = /** @class */ (function () {
             headers: { 'X-Http-Token': this.token }
         });
     };
-    StoredSafe.prototype.object = function (id, children) {
+    StoredSafe.prototype.getObject = function (id, children) {
         if (children === void 0) { children = false; }
         this.assertTokenExists();
         return this.axios.get("/object/" + id, {
@@ -171,13 +171,13 @@ var StoredSafe = /** @class */ (function () {
             headers: { 'X-Http-Token': this.token }
         });
     };
-    StoredSafe.prototype.template = function (id) {
+    StoredSafe.prototype.getTemplate = function (id) {
         this.assertTokenExists();
         return this.axios.get("/template/" + id, {
             headers: { 'X-Http-Token': this.token }
         });
     };
-    StoredSafe.prototype.permissionBits = function () {
+    StoredSafe.prototype.statusValues = function () {
         this.assertTokenExists();
         return this.axios.get('/utils/statusvalues', {
             headers: { 'X-Http-Token': this.token }

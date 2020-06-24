@@ -66,7 +66,7 @@ export interface StoredSafeTemplate {
   }[];
 }
 
-// template endpoints still return 2.0.5-style response unlike templates
+// NOTE: template endpoints still return 2.0.5-style response unlike templates
 // returned by the object endpoint.
 export interface StoredSafeLegacyTemplate {
   INFO: {
@@ -109,6 +109,15 @@ export interface StoredSafeUser {
   username: string;
 }
 
+export interface StoredSafeVaultMember {
+  email: string;
+  fullname: string;
+  groupstatus: string;
+  id: string;
+  status: string;
+  username: string;
+}
+
 /// /////////////////////////////////////////////////////////
 // Response types
 
@@ -126,6 +135,7 @@ export interface StoredSafeData {
     status: string;
     errors: number;
     errorcodes: number;
+    message?: string;
   };
 }
 
@@ -174,7 +184,21 @@ export interface StoredSafeLogoutData extends StoredSafeData {
   };
 }
 
-export interface StoredSafeCheckData extends StoredSafeData {
+export interface StoredSafeVaultData extends StoredSafeData {
+  VAULT: StoredSafeVault[];
+}
+
+export interface StoredSafeVaultsData extends StoredSafeData {
+  VAULTS: StoredSafeVault[];
+}
+
+export interface StoredSafeVaultObjectsData extends StoredSafeData {
+  VAULT: StoredSafeVault[];
+  OBJECTS: StoredSafeObject[];
+  TEMPLATES: StoredSafeTemplate[];
+}
+
+export interface StoredSafeVaultMembersData extends StoredSafeData {
   CALLINFO: {
     errorcodes: number;
     errors: number;
@@ -182,47 +206,61 @@ export interface StoredSafeCheckData extends StoredSafeData {
     handler: string;
     status: string;
     token: string;
+    vaultmembers: StoredSafeVaultMember[];
   };
 }
 
-export interface StoredSafeOtherData extends StoredSafeData {
+export interface StoredSafeObjectData extends StoredSafeData {
+  BREADCRUMB?: {
+    icon: string;
+    objectid: string;
+    objectname: string;
+  }[];
+  OBJECT: StoredSafeObject[];
+  TEMPLATES: StoredSafeTemplate[];
+}
+
+export interface StoredSafeCreateObjectData extends StoredSafeData {
   CALLINFO: {
     errorcodes: number;
     errors: number;
     general: string[];
     handler: string;
     status: string;
-    token?: string;
-    fingerprint?: string;
-    userid?: string;
-    password?: string;
-    userstatus?: string;
-    username?: string;
-    fullname?: string;
-    timeout?: number;
-    filesupport?: number; // Docs say string
-    logout?: string;
-    audit?: {
-      violations: [] | {
-        [key: string]: string;
-      };
-      warnings: [] | {
-        [key: string]: string;
-      };
-    };
-    vaultmembers?: {
-      email: string;
-      fullname: string;
-      groupstatus: string;
-      id: string;
-      status: string;
-      username: string;
-    }[];
+    token: string;
     message?: string;
-    objectid?: string;
-    calculated_status?: string;
-    user_created?: string;
-    users?: StoredSafeUser[];
+    objectid: string;
+  };
+}
+
+export interface StoredSafeTemplateData extends StoredSafeData {
+  TEMPLATE: StoredSafeLegacyTemplate[];
+}
+
+export interface StoredSafeTemplatesData extends StoredSafeData {
+  TEMPLATES: StoredSafeLegacyTemplate[];
+}
+
+export interface StoredSafeUsersData extends StoredSafeData {
+  CALLINFO: {
+    errorcodes: number;
+    errors: number;
+    general: string[];
+    handler: string;
+    status: string;
+    token: string;
+    users: StoredSafeUser[];
+  };
+}
+
+export interface StoredSafeStatusValuesData extends StoredSafeData {
+  CALLINFO: {
+    errorcodes: number;
+    errors: number;
+    general: string[];
+    handler: string;
+    status: string;
+    token: string;
     statusbits?: {
       userbits: {
         [bit: string]: number;
@@ -231,10 +269,22 @@ export interface StoredSafeOtherData extends StoredSafeData {
         [bit: string]: number;
       };
     };
-    policies?: {
-      id: string;
+  };
+}
+
+export interface StoredSafePoliciesData extends StoredSafeData {
+  CALLINFO: {
+    errorcodes: number;
+    errors: number;
+    general: string[];
+    handler: string;
+    status: string;
+    token: string;
+    policies: {
+      id: number;
       name: string;
       rules: {
+        max_numeric_chars?: number;
         min_length?: number;
         min_lowercase_chars?: number;
         min_nonalphanumeric_chars?: number;
@@ -242,20 +292,31 @@ export interface StoredSafeOtherData extends StoredSafeData {
         min_uppercase_chars?: number;
       };
     }[];
-    version?: string;
-    passphrase?: string;
-    length?: string;
-    type?: string;
   };
-  VAULTS?: StoredSafeVault[];
-  VAULT?: StoredSafeVault[];
-  OBJECTS?: StoredSafeObject[];
-  OBJECT?: StoredSafeObject[];
-  TEMPLATES?: StoredSafeTemplate[];
-  TEMPLATE?: StoredSafeLegacyTemplate[];
-  BREADCRUMB?: {
-    icon: string;
-    objectid: string;
-    objectname: string;
-  }[];
+}
+
+export interface StoredSafeVersionData extends StoredSafeData {
+  CALLINFO: {
+    errorcodes: number;
+    errors: number;
+    general: string[];
+    handler: string;
+    status: string;
+    token: string;
+    version: string;
+  };
+}
+
+export interface StoredSafePasswordData extends StoredSafeData {
+  CALLINFO: {
+    errorcodes: number;
+    errors: number;
+    general: string[];
+    handler: string;
+    status: string;
+    token: string;
+    password: string;
+    length: number;
+    type: string;
+  };
 }

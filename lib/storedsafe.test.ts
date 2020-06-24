@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/camelcase */
 import nock from 'nock';
 import axios from 'axios';
 
@@ -202,7 +203,7 @@ describe("after authentication", () => {
       .get(`/object/${id}`)
       .query({ children: false })
       .reply(200, replySuccess);
-      return storedsafe.object(id)
+      return storedsafe.getObject(id)
       .then(res => {
         expect(res.status).toBe(200);
       });
@@ -217,7 +218,7 @@ describe("after authentication", () => {
       .get(`/object/${id}`)
       .query({ children: false })
       .reply(200, replySuccess);
-      return storedsafe.object(id, false)
+      return storedsafe.getObject(id, false)
       .then(res => {
         expect(res.status).toBe(200);
       });
@@ -232,7 +233,7 @@ describe("after authentication", () => {
       .get(`/object/${id}`)
       .query({ children: true })
       .reply(200, replySuccess);
-      return storedsafe.object(id, true)
+      return storedsafe.getObject(id, true)
       .then(res => {
         expect(res.status).toBe(200);
       });
@@ -328,7 +329,7 @@ describe("after authentication", () => {
       });
     });
 
-    test(".template", () => {
+    test(".getTemplate", () => {
       nock(url, {
         reqheaders: {
           'X-Http-Token': token,
@@ -336,7 +337,7 @@ describe("after authentication", () => {
       })
       .get(`/template/${id}`)
       .reply(200, replySuccess)
-      return storedsafe.template(id)
+      return storedsafe.getTemplate(id)
       .then(res => {
         expect(res.status).toBe(200);
       });
@@ -344,7 +345,7 @@ describe("after authentication", () => {
   }); // END TEMPLATE
 
   describe("/utils", () => {
-    test(".permissionBits", () => {
+    test(".statusValues", () => {
       nock(url, {
         reqheaders: {
           'X-Http-Token': token,
@@ -352,7 +353,7 @@ describe("after authentication", () => {
       })
       .get('/utils/statusvalues')
       .reply(200, replySuccess);
-      return storedsafe.permissionBits()
+      return storedsafe.statusValues()
       .then(res => {
         expect(res.status).toBe(200);
       });
@@ -432,7 +433,7 @@ describe("after authentication", () => {
         expect(res.status).toBe(200);
       });
     });
-  }); // END TEMPLATE
+  }); // END UTILS
 
 });
 
