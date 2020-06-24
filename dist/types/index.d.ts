@@ -129,10 +129,25 @@ export interface StoredSafeData {
         message?: string;
     };
 }
-export interface StoredSafeErrorData extends StoredSafeData {
+export interface StoredSafeErrorData {
     ERRORS: string[];
     ERRORCODES: {
         [code: string]: string;
+    };
+    DATA: {
+        [key: string]: string | number | undefined;
+    };
+    HEADERS: {
+        [header: string]: string;
+    };
+    PARAMS: [];
+    CALLINFO: {
+        general: string[];
+        handler: string;
+        status: string;
+        errors: number;
+        errorcodes: number;
+        message?: string;
     };
 }
 export interface StoredSafeLoginData extends StoredSafeData {
