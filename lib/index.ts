@@ -16,7 +16,6 @@ import {
   StoredSafeVaultsData,
   StoredSafeObjectData,
   StoredSafeCreateObjectData,
-  StoredSafeTemplatesData,
   StoredSafeTemplateData,
   StoredSafeStatusValuesData,
   StoredSafePasswordData,
@@ -45,7 +44,6 @@ export {
   StoredSafeVaultsData,
   StoredSafeObjectData,
   StoredSafeCreateObjectData,
-  StoredSafeTemplatesData,
   StoredSafeTemplateData,
   StoredSafeStatusValuesData,
   StoredSafePasswordData,
@@ -290,7 +288,7 @@ class StoredSafe {
     })
   }
 
-  listTemplates (): StoredSafePromise<StoredSafeTemplatesData> {
+  listTemplates (): StoredSafePromise<StoredSafeTemplateData> {
     this.assertTokenExists()
     return this.axios.get('/template', {
       headers: { 'X-Http-Token': this.token }

@@ -229,9 +229,6 @@ export interface StoredSafeCreateObjectData extends StoredSafeData {
 export interface StoredSafeTemplateData extends StoredSafeData {
     TEMPLATE: StoredSafeLegacyTemplate[];
 }
-export interface StoredSafeTemplatesData extends StoredSafeData {
-    TEMPLATES: StoredSafeLegacyTemplate[];
-}
 export interface StoredSafeUsersData extends StoredSafeData {
     CALLINFO: {
         errorcodes: number;

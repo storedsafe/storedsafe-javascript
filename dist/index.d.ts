@@ -1,7 +1,7 @@
 import { AxiosPromise, AxiosResponse, AxiosError } from 'axios';
-import { StoredSafeData, StoredSafeErrorData, StoredSafeLoginData, StoredSafeLogoutData, StoredSafeVaultData, StoredSafeVaultObjectsData, StoredSafeVaultMembersData, StoredSafeVaultsData, StoredSafeObjectData, StoredSafeCreateObjectData, StoredSafeTemplatesData, StoredSafeTemplateData, StoredSafeStatusValuesData, StoredSafePasswordData, StoredSafePoliciesData, StoredSafeVersionData, StoredSafeCheckData } from './types';
+import { StoredSafeData, StoredSafeErrorData, StoredSafeLoginData, StoredSafeLogoutData, StoredSafeVaultData, StoredSafeVaultObjectsData, StoredSafeVaultMembersData, StoredSafeVaultsData, StoredSafeObjectData, StoredSafeCreateObjectData, StoredSafeTemplateData, StoredSafeStatusValuesData, StoredSafePasswordData, StoredSafePoliciesData, StoredSafeVersionData, StoredSafeCheckData } from './types';
 export { StoredSafeVault, StoredSafeUser, StoredSafeTemplate, StoredSafeLegacyTemplate, StoredSafeObject, StoredSafeVaultMember } from './types';
-export { StoredSafeData, StoredSafeErrorData, StoredSafeLoginData, StoredSafeLogoutData, StoredSafeVaultData, StoredSafeVaultObjectsData, StoredSafeVaultMembersData, StoredSafeVaultsData, StoredSafeObjectData, StoredSafeCreateObjectData, StoredSafeTemplatesData, StoredSafeTemplateData, StoredSafeStatusValuesData, StoredSafePasswordData, StoredSafePoliciesData, StoredSafeVersionData, StoredSafeCheckData };
+export { StoredSafeData, StoredSafeErrorData, StoredSafeLoginData, StoredSafeLogoutData, StoredSafeVaultData, StoredSafeVaultObjectsData, StoredSafeVaultMembersData, StoredSafeVaultsData, StoredSafeObjectData, StoredSafeCreateObjectData, StoredSafeTemplateData, StoredSafeStatusValuesData, StoredSafePasswordData, StoredSafePoliciesData, StoredSafeVersionData, StoredSafeCheckData };
 export interface StoredSafeResponse<T extends StoredSafeData> extends AxiosResponse<T> {
 }
 export interface StoredSafePromise<T extends StoredSafeData> extends AxiosPromise<T> {
@@ -39,7 +39,7 @@ declare class StoredSafe {
     editObject(id: string | number, params: object): StoredSafePromise<StoredSafeCreateObjectData>;
     deleteObject(id: string | number): StoredSafePromise<StoredSafeData>;
     find(needle: string): StoredSafePromise<StoredSafeObjectData>;
-    listTemplates(): StoredSafePromise<StoredSafeTemplatesData>;
+    listTemplates(): StoredSafePromise<StoredSafeTemplateData>;
     getTemplate(id: string | number): StoredSafePromise<StoredSafeTemplateData>;
     statusValues(): StoredSafePromise<StoredSafeStatusValuesData>;
     passwordPolicies(): StoredSafePromise<StoredSafePoliciesData>;
