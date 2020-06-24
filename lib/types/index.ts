@@ -135,6 +135,7 @@ export interface StoredSafeData {
     status: string;
     errors: number;
     errorcodes: number;
+    token: string;
     message?: string;
   };
 }
