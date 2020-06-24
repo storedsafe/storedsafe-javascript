@@ -302,7 +302,7 @@ export interface StoredSafePasswordData extends StoredSafeData {
         handler: string;
         status: string;
         token: string;
-        password: string;
+        passphrase: string;
         length: number;
         type: string;
     };
