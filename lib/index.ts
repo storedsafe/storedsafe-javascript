@@ -21,7 +21,8 @@ import {
   StoredSafeStatusValuesData,
   StoredSafePasswordData,
   StoredSafePoliciesData,
-  StoredSafeVersionData
+  StoredSafeVersionData,
+  StoredSafeCheckData
 } from './types'
 
 export {
@@ -49,7 +50,8 @@ export {
   StoredSafeStatusValuesData,
   StoredSafePasswordData,
   StoredSafePoliciesData,
-  StoredSafeVersionData
+  StoredSafeVersionData,
+  StoredSafeCheckData
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -153,7 +155,7 @@ class StoredSafe {
       })
   }
 
-  check (): StoredSafePromise<StoredSafeData> {
+  check (): StoredSafePromise<StoredSafeCheckData> {
     this.assertTokenExists()
     return this.axios.post(
       '/auth/check',

@@ -135,29 +135,14 @@ export interface StoredSafeData {
     status: string;
     errors: number;
     errorcodes: number;
-    token: string;
+    token?: string;
     message?: string;
   };
 }
 
-export interface StoredSafeErrorData {
+export interface StoredSafeErrorData extends StoredSafeData {
   ERRORS: string[];
   ERRORCODES: { [code: string]: string };
-  DATA: {
-    [key: string]: string | number | undefined;
-  };
-  HEADERS: {
-    [header: string]: string;
-  };
-  PARAMS: [];
-  CALLINFO: {
-    general: string[];
-    handler: string;
-    status: string;
-    errors: number;
-    errorcodes: number;
-    message?: string;
-  };
 }
 
 export interface StoredSafeLoginData extends StoredSafeData {
@@ -191,6 +176,17 @@ export interface StoredSafeLoginData extends StoredSafeData {
 export interface StoredSafeLogoutData extends StoredSafeData {
   CALLINFO: {
     logout: string;
+    errorcodes: number;
+    errors: number;
+    general: string[];
+    handler: string;
+    status: string;
+    token: string;
+  };
+}
+
+export interface StoredSafeCheckData extends StoredSafeData {
+  CALLINFO: {
     errorcodes: number;
     errors: number;
     general: string[];
