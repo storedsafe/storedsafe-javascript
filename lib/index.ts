@@ -38,6 +38,18 @@ export {
   StoredSafeErrorData,
   StoredSafeLoginData,
   StoredSafeLogoutData,
+  StoredSafeVaultData,
+  StoredSafeVaultObjectsData,
+  StoredSafeVaultMembersData,
+  StoredSafeVaultsData,
+  StoredSafeObjectData,
+  StoredSafeCreateObjectData,
+  StoredSafeTemplatesData,
+  StoredSafeTemplateData,
+  StoredSafeStatusValuesData,
+  StoredSafePasswordData,
+  StoredSafePoliciesData,
+  StoredSafeVersionData
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface

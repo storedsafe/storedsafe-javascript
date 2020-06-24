@@ -1,7 +1,7 @@
 import { AxiosPromise, AxiosResponse, AxiosError } from 'axios';
 import { StoredSafeData, StoredSafeErrorData, StoredSafeLoginData, StoredSafeLogoutData, StoredSafeVaultData, StoredSafeVaultObjectsData, StoredSafeVaultMembersData, StoredSafeVaultsData, StoredSafeObjectData, StoredSafeCreateObjectData, StoredSafeTemplatesData, StoredSafeTemplateData, StoredSafeStatusValuesData, StoredSafePasswordData, StoredSafePoliciesData, StoredSafeVersionData } from './types';
 export { StoredSafeVault, StoredSafeUser, StoredSafeTemplate, StoredSafeLegacyTemplate, StoredSafeObject, StoredSafeVaultMember } from './types';
-export { StoredSafeData, StoredSafeErrorData, StoredSafeLoginData, StoredSafeLogoutData, };
+export { StoredSafeData, StoredSafeErrorData, StoredSafeLoginData, StoredSafeLogoutData, StoredSafeVaultData, StoredSafeVaultObjectsData, StoredSafeVaultMembersData, StoredSafeVaultsData, StoredSafeObjectData, StoredSafeCreateObjectData, StoredSafeTemplatesData, StoredSafeTemplateData, StoredSafeStatusValuesData, StoredSafePasswordData, StoredSafePoliciesData, StoredSafeVersionData };
 export interface StoredSafeResponse<T extends StoredSafeData> extends AxiosResponse<T> {
 }
 export interface StoredSafePromise<T extends StoredSafeData> extends AxiosPromise<T> {
