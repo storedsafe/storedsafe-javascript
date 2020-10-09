@@ -1,3 +1,8 @@
+import { AxiosResponse, AxiosError } from 'axios'
+
+export interface StoredSafeResponse<T extends StoredSafeData> extends AxiosResponse<T> {}
+export interface StoredSafeError extends AxiosError<StoredSafeErrorData> {}
+
 /// /////////////////////////////////////////////////////////
 // Data types
 
