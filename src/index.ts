@@ -37,7 +37,10 @@ class StoredSafe {
   ) {
     this.axios = axios.create({
       baseURL: `https://${host}/api/${version}/`,
-      timeout: 5000
+      timeout: 5000,
+      validateStatus: function (status) {
+        return status >= 200 && status < 500
+      }
     })
     this.apikey = apikey
     this.token = token
