@@ -8,7 +8,7 @@ export interface StoredSafeVault {
     groupname: string;
     policy: string;
     description: string;
-    status: 'SUCCESS' | 'FAIL';
+    status: string;
     statustext: string;
 }
 export interface StoredSafeObject {
