@@ -275,12 +275,22 @@ export interface StoredSafePoliciesData extends StoredSafeData {
             id: number;
             name: string;
             rules: {
-                max_numeric_chars?: number;
                 min_length?: number;
+                max_length?: number;
                 min_lowercase_chars?: number;
-                min_nonalphanumeric_chars?: number;
-                min_numeric_chars?: number;
+                max_lowercase_chars?: number;
                 min_uppercase_chars?: number;
+                max_uppercase_chars?: number;
+                disallow_numeric_chars?: boolean;
+                disallow_numeric_first?: boolean;
+                disallow_numeric_last?: boolean;
+                min_numeric_chars?: number;
+                max_numeric_chars?: number;
+                disallow_nonalphanumeric_chars?: boolean;
+                disallow_nonalphanumeric_first?: boolean;
+                disallow_nonalphanumeric_last?: boolean;
+                min_nonalphanumeric_chars?: number;
+                max_nonalphanumeric_chars?: number;
             };
         }[];
     };
