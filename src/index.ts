@@ -277,7 +277,7 @@ class StoredSafe {
       words?: number
       min_char?: number
       max_char?: number
-      policyid?: string
+      policyid?: number
     } = {}
   ): Promise<StoredSafeResponse<StoredSafePasswordData>> {
     this.assertTokenExists()
