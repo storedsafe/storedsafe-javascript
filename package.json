@@ -1,6 +1,6 @@
 {
   "name": "@storedsafe/storedsafe",
-  "version": "0.0.9",
+  "version": "0.1.0",
   "description": "JavaScript bindings for the StoredSafe REST-like API.",
   "main": "lib/cjs/index.js",
   "types": "lib/cjs/index.js",
@@ -34,6 +34,7 @@
     "typescript": "^3.9.10"
   },
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
+    "@storedsafe:registry": "https://npm.pkg.github.com",
+    "access": "public"
   }
 }
