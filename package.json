@@ -11,10 +11,7 @@
     "build": "tsc -p tsconfig.json && tsc -p tsconfig-cjs.json",
     "test": "jest"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/storedsafe/storedsafe-javascript.git"
-  },
+  "repository": "https://github.com/storedsafe/storedsafe-javascript.git",
   "keywords": [
     "storedsafe"
   ],
