@@ -12,6 +12,7 @@
     "test": "jest"
   },
   "repository": "https://github.com/storedsafe/storedsafe-javascript.git",
+  "owner": "storedsafe",
   "keywords": [
     "storedsafe"
   ],
