@@ -1,5 +1,5 @@
 {
-  "name": "@storedsafe/storedsafe",
+  "name": "storedsafe",
   "version": "0.1.0",
   "description": "JavaScript bindings for the StoredSafe REST-like API.",
   "main": "lib/cjs/index.js",
