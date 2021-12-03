@@ -1,6 +1,12 @@
 # StoredSafe JavaScript
 JavaScript bindings for the StoredSafe RESTlike API. All methods are completely transparent and built on top of axios. This means the return value is the Promise returned by axios. No parsing is done whatsoever beyond saving the token returned by authentication requests for convenience.
 
+## Install
+
+```bash
+npm install storedsafe
+```
+
 ## Usage
 The structure of the returned data is described in the [StoredSafe RESTlike API](https://developer.storedsafe.com) documentation.
 For learning more about the Promise-based return values, look at the [axios](https://github.com/axios/axios) documentation.
