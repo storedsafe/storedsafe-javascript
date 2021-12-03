@@ -1,6 +1,6 @@
 {
-  "name": "@storedsafe/storedsafe",
-  "version": "0.1.0",
+  "name": "storedsafe",
+  "version": "0.1.1",
   "description": "JavaScript bindings for the StoredSafe REST-like API.",
   "main": "lib/cjs/index.js",
   "types": "lib/cjs/index.js",
@@ -11,7 +11,10 @@
     "build": "tsc -p tsconfig.json && tsc -p tsconfig-cjs.json",
     "test": "jest"
   },
-  "repository": "git://github.com/storedsafe/storedsafe-javascript.git",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/storedsafe/storedsafe-javascript.git"
+  },
   "keywords": [
     "storedsafe"
   ],

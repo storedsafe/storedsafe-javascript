@@ -44,7 +44,7 @@ declare class StoredSafe {
         words?: number;
         min_char?: number;
         max_char?: number;
-        policyid?: number;
+        policyid?: number | string;
     }): Promise<StoredSafeResponse<StoredSafePasswordData>>;
 }
 export default StoredSafe;

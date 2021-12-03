@@ -92,7 +92,7 @@ class StoredSafe {
   async logout (): Promise<StoredSafeResponse<StoredSafeLogoutData>> {
     this.assertTokenExists()
     const response = await this.axios.get('/auth/logout', {
-      headers: { 'X-Http-Token': this.token }
+      headers: { 'X-Http-Token': this.token as string }
     })
     this.token = undefined
     return response
@@ -103,14 +103,14 @@ class StoredSafe {
     return await this.axios.post(
       '/auth/check',
       {},
-      { headers: { 'X-Http-Token': this.token } }
+      { headers: { 'X-Http-Token': this.token as string } }
     )
   }
 
   async listVaults (): Promise<StoredSafeResponse<StoredSafeVaultsData>> {
     this.assertTokenExists()
     return await this.axios.get('/vault', {
-      headers: { 'X-Http-Token': this.token }
+      headers: { 'X-Http-Token': this.token as string }
     })
   }
 
@@ -119,7 +119,7 @@ class StoredSafe {
   ): Promise<StoredSafeResponse<StoredSafeVaultObjectsData>> {
     this.assertTokenExists()
     return await this.axios.get(`/vault/${id}`, {
-      headers: { 'X-Http-Token': this.token }
+      headers: { 'X-Http-Token': this.token as string }
     })
   }
 
@@ -128,7 +128,7 @@ class StoredSafe {
   ): Promise<StoredSafeResponse<StoredSafeVaultMembersData>> {
     this.assertTokenExists()
     return await this.axios.get(`/vault/${id}/members`, {
-      headers: { 'X-Http-Token': this.token }
+      headers: { 'X-Http-Token': this.token as string }
     })
   }
 
@@ -139,7 +139,7 @@ class StoredSafe {
     return await this.axios.post(
       '/vault',
       { ...params },
-      { headers: { 'X-Http-Token': this.token } }
+      { headers: { 'X-Http-Token': this.token as string } }
     )
   }
 
@@ -151,7 +151,7 @@ class StoredSafe {
     return await this.axios.put(
       `/vault/${id}`,
       { ...params },
-      { headers: { 'X-Http-Token': this.token } }
+      { headers: { 'X-Http-Token': this.token as string } }
     )
   }
 
@@ -160,7 +160,7 @@ class StoredSafe {
   ): Promise<StoredSafeResponse<StoredSafeData>> {
     this.assertTokenExists()
     return await this.axios.delete(`/vault/${id}`, {
-      headers: { 'X-Http-Token': this.token }
+      headers: { 'X-Http-Token': this.token as string }
     })
   }
 
@@ -171,7 +171,7 @@ class StoredSafe {
     this.assertTokenExists()
     return await this.axios.get(`/object/${id}`, {
       params: { children: children },
-      headers: { 'X-Http-Token': this.token }
+      headers: { 'X-Http-Token': this.token as string }
     })
   }
 
@@ -181,7 +181,7 @@ class StoredSafe {
     this.assertTokenExists()
     return await this.axios.get(`/object/${id}`, {
       params: { decrypt: true },
-      headers: { 'X-Http-Token': this.token }
+      headers: { 'X-Http-Token': this.token as string }
     })
   }
 
@@ -192,7 +192,7 @@ class StoredSafe {
     return await this.axios.post(
       '/object',
       { ...params },
-      { headers: { 'X-Http-Token': this.token } }
+      { headers: { 'X-Http-Token': this.token as string } }
     )
   }
 
@@ -204,7 +204,7 @@ class StoredSafe {
     return await this.axios.put(
       `/object/${id}`,
       { ...params },
-      { headers: { 'X-Http-Token': this.token } }
+      { headers: { 'X-Http-Token': this.token as string } }
     )
   }
 
@@ -213,7 +213,7 @@ class StoredSafe {
   ): Promise<StoredSafeResponse<StoredSafeData>> {
     this.assertTokenExists()
     return await this.axios.delete(`/object/${id}`, {
-      headers: { 'X-Http-Token': this.token }
+      headers: { 'X-Http-Token': this.token as string }
     })
   }
 
@@ -223,14 +223,14 @@ class StoredSafe {
     this.assertTokenExists()
     return await this.axios.get('/find', {
       params: { needle: needle },
-      headers: { 'X-Http-Token': this.token }
+      headers: { 'X-Http-Token': this.token as string }
     })
   }
 
   async listTemplates (): Promise<StoredSafeResponse<StoredSafeTemplateData>> {
     this.assertTokenExists()
     return await this.axios.get('/template', {
-      headers: { 'X-Http-Token': this.token }
+      headers: { 'X-Http-Token': this.token as string }
     })
   }
 
@@ -239,7 +239,7 @@ class StoredSafe {
   ): Promise<StoredSafeResponse<StoredSafeTemplateData>> {
     this.assertTokenExists()
     return await this.axios.get(`/template/${id}`, {
-      headers: { 'X-Http-Token': this.token }
+      headers: { 'X-Http-Token': this.token as string }
     })
   }
 
@@ -248,7 +248,7 @@ class StoredSafe {
   > {
     this.assertTokenExists()
     return await this.axios.get('/utils/statusvalues', {
-      headers: { 'X-Http-Token': this.token }
+      headers: { 'X-Http-Token': this.token as string }
     })
   }
 
@@ -257,14 +257,14 @@ class StoredSafe {
   > {
     this.assertTokenExists()
     return await this.axios.get('/utils/policies', {
-      headers: { 'X-Http-Token': this.token }
+      headers: { 'X-Http-Token': this.token as string }
     })
   }
 
   async version (): Promise<StoredSafeResponse<StoredSafeVersionData>> {
     this.assertTokenExists()
     return await this.axios.get('/utils/version', {
-      headers: { 'X-Http-Token': this.token }
+      headers: { 'X-Http-Token': this.token as string }
     })
   }
 
@@ -277,12 +277,12 @@ class StoredSafe {
       words?: number
       min_char?: number
       max_char?: number
-      policyid?: number
+      policyid?: number | string
     } = {}
   ): Promise<StoredSafeResponse<StoredSafePasswordData>> {
     this.assertTokenExists()
     return await this.axios.get('utils/pwgen', {
-      headers: { 'X-Http-Token': this.token },
+      headers: { 'X-Http-Token': this.token as string },
       params
     })
   }
