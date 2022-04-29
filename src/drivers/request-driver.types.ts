@@ -12,20 +12,20 @@
  *  - NodeHTTPDriver:   Uses the NodeJS built-in https library
  */
 export interface RequestResponse<ResType = any> {
-    status: number
-    statusText?: string
-    body: string
-    response: ResType
+  status: number
+  statusText?: string
+  body: string
+  response: ResType
 }
 
 export interface RequestOptions<OptType = any> {
-    url: string
-    method: 'GET' | 'POST' | 'PUT' | 'DELETE'
-    data?: object
-    headers?: Record<string, string>
-    options?: OptType
+  url: string
+  method: 'GET' | 'POST' | 'PUT' | 'DELETE'
+  data?: object
+  headers?: Record<string, string>
+  options?: OptType
 }
 
 export interface RequestDriver<ResType = any, OptType = any> {
-    request(options: RequestOptions<OptType>): Promise<RequestResponse<ResType>>
+  request(options: RequestOptions<OptType>): Promise<RequestResponse<ResType>>
 }

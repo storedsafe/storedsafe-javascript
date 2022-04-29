@@ -4,5 +4,3 @@ import { FetchDriver } from './drivers/fetch-driver'
 export { FetchDriver }
 
 StoredSafe.default_driver = new FetchDriver()
-
-console.log("browser")

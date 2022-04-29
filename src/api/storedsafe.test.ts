@@ -3,7 +3,6 @@ import type {
   RequestOptions,
   RequestResponse
 } from '../drivers/request-driver.types'
-import isEqual from 'lodash.isequal'
 
 interface TestDriverMockParams {
   path: string
@@ -49,7 +48,7 @@ export default class TestDriver implements RequestDriver {
     if (!query) return this.url + path
     let queryString = '?' +
       Object.keys(query).map(key => `${key}=${query[key]}`).join('&')
-    return this.url + path + queryString;
+    return this.url + path + queryString
   }
 
   async request({
@@ -208,7 +207,7 @@ describe("after authentication", () => {
       const res = await storedsafe.check()
       expect(res.status).toBe(200)
     })
-  }); // END AUTH
+  }) // END AUTH
 
   describe("/vault", () => {
     test(".listVaults", async () => {
@@ -296,7 +295,7 @@ describe("after authentication", () => {
           expect(res.status).toBe(200)
         })
     })
-  }); // END VAULT
+  }) // END VAULT
 
   describe("/object", () => {
     test(".object, default (no children)", () => {
@@ -402,7 +401,7 @@ describe("after authentication", () => {
           expect(res.status).toBe(200)
         })
     })
-  }); // END OBJECT
+  }) // END OBJECT
 
   describe("/find", () => {
     test(".find", () => {
@@ -418,7 +417,7 @@ describe("after authentication", () => {
           expect(res.status).toBe(200)
         })
     })
-  }); // END FIND
+  }) // END FIND
 
   describe("/template", () => {
     test(".listTemplates", () => {
@@ -448,7 +447,7 @@ describe("after authentication", () => {
           expect(res.status).toBe(200)
         })
     })
-  }); // END TEMPLATE
+  }) // END TEMPLATE
 
   describe("/utils", () => {
     test(".statusValues", () => {
@@ -541,7 +540,6 @@ describe("after authentication", () => {
           expect(res.status).toBe(200)
         })
     })
-  }); // END UTILS
-
+  }) // END UTILS
 })
 
