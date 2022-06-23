@@ -26,7 +26,8 @@ export class NodeDriver implements RequestDriver<IncomingMessage, https.RequestO
   agent: https.Agent;
   requestOptions: https.RequestOptions;
 
-  constructor({ agent, requestOptions }: NodeDriverInit = { agent: false }) {
+  constructor({ agent, requestOptions }: NodeDriverInit = {}) {
+    agent = agent ?? false
     if (agent instanceof https.Agent) {
       this.agent = agent
     }
@@ -39,7 +40,7 @@ export class NodeDriver implements RequestDriver<IncomingMessage, https.RequestO
     this.requestOptions = requestOptions ?? {}
   }
 
-  handleRequest(request: ClientRequest): PromiseCallback<NodeResponse> {
+  private handleRequest(request: ClientRequest): PromiseCallback<NodeResponse> {
     return (resolve, reject) => {
       request.on('response', (response) => {
         response.on('data', (data) => {

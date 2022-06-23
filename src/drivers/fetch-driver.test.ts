@@ -1,6 +1,6 @@
 import { FetchDriver } from "./fetch-driver"
 
-const fetchMock = jest.fn<Promise<Response>, [RequestInfo, RequestInit?]>()
+const fetchMock = jest.fn<Promise<Response>, [RequestInfo | URL, RequestInit?]>()
 global.fetch = fetchMock
 
 let driver: FetchDriver
@@ -23,7 +23,7 @@ const url = 'https://example.com'
 function mockFetch({
   data, status, statusText
 }: {
-  data: Record<string, any>
+  data?: Record<string, any>
   status: number
   statusText: string
 }): Response {
@@ -33,7 +33,7 @@ function mockFetch({
     text: () => Promise.resolve<string>(JSON.stringify(data))
   } as any as Response
   const mockFn = (
-    input: RequestInfo, init?: RequestInit
+    input: RequestInfo | URL, init?: RequestInit
   ): Promise<Response> => Promise.resolve(response)
   fetchMock.mockImplementationOnce(mockFn)
   return response
@@ -71,7 +71,6 @@ describe('Basic requests', () => {
 
   test('GET request', async () => {
     const mockRes = mockFetch({
-      data: { foo: 'bar' },
       status: 200,
       statusText: 'OK'
     })
@@ -83,7 +82,7 @@ describe('Basic requests', () => {
       headers: {},
       method: "GET"
     })
-    expect(res.body).toEqual(JSON.stringify({ foo: 'bar' }))
+    expect(res.body).toEqual(undefined)
     expect(res.status).toEqual(200)
     expect(res.statusText).toEqual('OK')
     expect(res.response).toBe(mockRes)
@@ -102,46 +101,6 @@ describe('Basic requests', () => {
     expect(fetchMock).toHaveBeenLastCalledWith(url, {
       headers: {},
       method: "POST"
-    })
-    expect(res.body).toEqual(JSON.stringify({ foo: 'bar' }))
-    expect(res.status).toEqual(200)
-    expect(res.statusText).toEqual('OK')
-    expect(res.response).toBe(mockRes)
-  })
-
-  test('PUT request', async () => {
-    const mockRes = mockFetch({
-      data: { foo: 'bar' },
-      status: 200,
-      statusText: 'OK'
-    })
-    const res = await driver.request({
-      url,
-      method: "PUT",
-    })
-    expect(fetchMock).toHaveBeenLastCalledWith(url, {
-      headers: {},
-      method: "PUT"
-    })
-    expect(res.body).toEqual(JSON.stringify({ foo: 'bar' }))
-    expect(res.status).toEqual(200)
-    expect(res.statusText).toEqual('OK')
-    expect(res.response).toBe(mockRes)
-  })
-
-  test('DELETE request', async () => {
-    const mockRes = mockFetch({
-      data: { foo: 'bar' },
-      status: 200,
-      statusText: 'OK'
-    })
-    const res = await driver.request({
-      url,
-      method: "DELETE",
-    })
-    expect(fetchMock).toHaveBeenLastCalledWith(url, {
-      headers: {},
-      method: "DELETE"
     })
     expect(res.body).toEqual(JSON.stringify({ foo: 'bar' }))
     expect(res.status).toEqual(200)
