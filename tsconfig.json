@@ -7,9 +7,9 @@
     "declarationMap": true,
     "sourceMap": true,
 
-    "target": "es6",
-    "lib": ["dom", "es6"],
+    "target": "es2020",
     "moduleResolution": "node",
+    "lib": ["DOM", "ES2020"],
     "esModuleInterop": true,
 
     "strict": true,

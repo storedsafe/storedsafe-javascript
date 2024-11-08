@@ -30,6 +30,9 @@ export enum LoginType {
 
 /**
  * Wrapper for the StoredSafe REST-like API.
+ * 
+ * API documentation at: https://developer.storedsafe.com/
+ * 
  * @author Oscar Mattsson
  */
 export class StoredSafe<ResType = any, OptType = any> {
@@ -364,6 +367,17 @@ export class StoredSafe<ResType = any, OptType = any> {
     return await this.get(`/object/${id}`, options, {
       headers: { 'X-Http-Token': this.token as string },
       queryParams: { decrypt: true }
+    })
+  }
+
+  async getFile(
+    id: string | number,
+    options?: OptType
+  ): Promise<StoredSafeResponse<StoredSafeObjectData>> {
+    this.assertTokenExists()
+    return await this.get(`/object/${id}`, options, {
+      headers: { 'X-Http-Token': this.token as string },
+      queryParams: { filedata: true }
     })
   }
 
