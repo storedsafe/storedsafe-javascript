@@ -118,6 +118,14 @@ export interface StoredSafeUser {
   otpprefix: string
   status: string
   username: string
+  tags: string[]
+  bits: {
+    [bit: string]: string
+  }
+  vaults?: {
+    id: string
+    status: string
+  }[]
 }
 
 export interface StoredSafeVaultMember {
@@ -260,18 +268,6 @@ export interface StoredSafeTemplateData extends StoredSafeData {
   TEMPLATE: StoredSafeLegacyTemplate[]
 }
 
-export interface StoredSafeUsersData extends StoredSafeData {
-  CALLINFO: {
-    errorcodes: number
-    errors: number
-    general: string[]
-    handler: string
-    status: 'SUCCESS' | 'FAIL'
-    token: string
-    users: StoredSafeUser[]
-  }
-}
-
 export interface StoredSafeStatusValuesData extends StoredSafeData {
   CALLINFO: {
     errorcodes: number
@@ -347,5 +343,64 @@ export interface StoredSafePasswordData extends StoredSafeData {
     passphrase: string
     length: number
     type: string
+  }
+}
+
+export interface StoredSafeUserData extends StoredSafeData {
+  CALLINFO: {
+    errorcodes: number
+    errors: number
+    general: string[]
+    handler: string
+    status: 'SUCCESS' | 'FAIL'
+    token: string
+    users: StoredSafeUser[]
+    vaults: {
+      id: string
+      name: string
+    }[]
+    bits_tests: string[]
+  }
+}
+
+export interface StoredSafeUsersData extends StoredSafeData {
+  CALLINFO: {
+    errorcodes: number
+    errors: number
+    general: string[]
+    handler: string
+    status: 'SUCCESS' | 'FAIL'
+    token: string
+    users: StoredSafeUser[]
+    vaults: {
+      id: string
+      name: string
+    }[]
+  }
+}
+
+export interface StoredSafeCreateUserData extends StoredSafeData {
+  CALLINFO: {
+    errorcodes: number
+    errors: number
+    general: string[]
+    handler: string
+    status: 'SUCCESS' | 'FAIL'
+    token: string
+    user: StoredSafeUser[]
+    calculated_status: number
+    user_created: string
+  }
+}
+
+export interface StoredSafeDeleteUserData extends StoredSafeData {
+  CALLINFO: {
+    errorcodes: number
+    errors: number
+    general: string[]
+    handler: string
+    status: 'SUCCESS' | 'FAIL'
+    token: string
+    calculated_status: number
   }
 }

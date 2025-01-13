@@ -102,7 +102,7 @@ const replySuccess = Object.freeze({
 })
 
 // Sample parameters
-const id = 1789
+const id = "1789"
 const needle = 'waldo'
 const params = Object.freeze({
   name: 'newname',
@@ -448,6 +448,65 @@ describe("after authentication", () => {
         })
     })
   }) // END TEMPLATE
+
+  describe("/user", () => {
+    test(".listUsers", () => {
+      driver.mock({
+        path: '/user',
+        method: 'GET',
+        headers: { 'X-Http-Token': token },
+        status: 200,
+        body: JSON.stringify(replySuccess)
+      })
+      return storedsafe.listUsers()
+        .then(res => {
+          expect(res.status).toBe(200)
+        })
+    })
+
+    test(".getUser", () => {
+      driver.mock({
+        path: `/user/${id}`,
+        method: 'GET',
+        headers: { 'X-Http-Token': token },
+        status: 200,
+        body: JSON.stringify(replySuccess)
+      })
+      return storedsafe.getUser(id)
+        .then(res => {
+          expect(res.status).toBe(200)
+        })
+    })
+
+    test(".createUser", () => {
+      driver.mock({
+        path: `/user`,
+        data: params,
+        method: 'POST',
+        headers: { 'X-Http-Token': token },
+        status: 200,
+        body: JSON.stringify(replySuccess)
+      })
+      return storedsafe.createUser(params)
+        .then(res => {
+          expect(res.status).toBe(200)
+        })
+    })
+
+    test(".deleteUser", () => {
+      driver.mock({
+        path: `/user/${id}`,
+        method: 'DELETE',
+        headers: { 'X-Http-Token': token },
+        status: 200,
+        body: JSON.stringify(replySuccess)
+      })
+      return storedsafe.deleteUser(id)
+        .then(res => {
+          expect(res.status).toBe(200)
+        })
+    })
+  }) // END USER
 
   describe("/utils", () => {
     test(".statusValues", () => {

@@ -15,7 +15,9 @@ import type {
   StoredSafeStatusValuesData,
   StoredSafePoliciesData,
   StoredSafeVersionData,
-  StoredSafePasswordData
+  StoredSafePasswordData,
+  StoredSafeCreateUserData,
+  StoredSafeUsersData
 } from './storedsafe.types'
 import type {
   RequestDriver,
@@ -440,6 +442,46 @@ export class StoredSafe<ResType = any, OptType = any> {
   ): Promise<StoredSafeResponse<StoredSafeTemplateData>> {
     this.assertTokenExists()
     return await this.get(`/template/${id}`, options, {
+      headers: { 'X-Http-Token': this.token as string }
+    })
+  }
+
+  async listUsers(
+    options?: OptType
+  ): Promise<StoredSafeResponse<StoredSafeUsersData>> {
+    this.assertTokenExists()
+    return await this.get('/user', options, {
+      headers: { 'X-Http-Token': this.token as string }
+    })
+  }
+
+  async getUser(
+    id: string | number,
+    options?: OptType
+  ): Promise<StoredSafeResponse<StoredSafeUsersData>> {
+    this.assertTokenExists()
+    return await this.get(`/user/${id}`, options, {
+      headers: { 'X-Http-Token': this.token as string }
+    })
+  }
+
+  async createUser(
+    params: object,
+    options?: OptType
+  ): Promise<StoredSafeResponse<StoredSafeCreateUserData>> {
+    this.assertTokenExists()
+    return await this.post('/user', options, {
+      headers: { 'X-Http-Token': this.token as string },
+      data: params
+    })
+  }
+
+  async deleteUser(
+    id: string | number,
+    options?: OptType
+  ): Promise<StoredSafeResponse<StoredSafeCreateUserData>> {
+    this.assertTokenExists()
+    return await this.delete(`/user/${id}`, options, {
       headers: { 'X-Http-Token': this.token as string }
     })
   }
