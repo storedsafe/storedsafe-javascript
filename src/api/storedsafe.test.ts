@@ -103,6 +103,7 @@ const replySuccess = Object.freeze({
 
 // Sample parameters
 const id = "1789"
+const id2 = "1337"
 const needle = 'waldo'
 const params = Object.freeze({
   name: 'newname',
@@ -247,6 +248,52 @@ describe("after authentication", () => {
         body: JSON.stringify(replySuccess)
       })
       return storedsafe.vaultMembers(id)
+        .then(res => {
+          expect(res.status).toBe(200)
+        })
+    })
+
+    test(".addVaultMember", () => {
+      const status = 2
+      driver.mock({
+        path: `/vault/${id}/members/${id2}`,
+        data: { status },
+        method: 'POST',
+        headers: { 'X-Http-Token': token },
+        status: 200,
+        body: JSON.stringify(replySuccess)
+      })
+      return storedsafe.addVaultMember(id, id2, status)
+        .then(res => {
+          expect(res.status).toBe(200)
+        })
+    })
+
+    test(".editVaultMember", () => {
+      const status = 4
+      driver.mock({
+        path: `/vault/${id}/members/${id2}`,
+        data: { status },
+        method: 'PUT',
+        headers: { 'X-Http-Token': token },
+        status: 200,
+        body: JSON.stringify(replySuccess)
+      })
+      return storedsafe.editVaultMember(id, id2, status)
+        .then(res => {
+          expect(res.status).toBe(200)
+        })
+    })
+
+    test(".removeVaultMember", () => {
+      driver.mock({
+        path: `/vault/${id}/members/${id2}`,
+        method: 'DELETE',
+        headers: { 'X-Http-Token': token },
+        status: 200,
+        body: JSON.stringify(replySuccess)
+      })
+      return storedsafe.removeVaultMember(id, id2)
         .then(res => {
           expect(res.status).toBe(200)
         })

@@ -349,6 +349,49 @@ export class StoredSafe<ResType = any, OptType = any> {
     })
   }
 
+  /**
+   * @param status 1=read, 2=write, 4=admin
+   */
+  async addVaultMember(
+    vaultId: string | number,
+    userId: string | number,
+    status: number,
+    options?: OptType
+  ): Promise<StoredSafeResponse<StoredSafeData>> {
+    this.assertTokenExists()
+    return await this.post(`/vault/${vaultId}/members/${userId}`, options, {
+      headers: { 'X-Http-Token': this.token as string },
+      data: { status }
+    })
+  }
+
+  /**
+   * @param status 1=read, 2=write, 4=admin
+   */
+  async editVaultMember(
+    vaultId: string | number,
+    userId: string | number,
+    status: number,
+    options?: OptType
+  ): Promise<StoredSafeResponse<StoredSafeData>> {
+    this.assertTokenExists()
+    return await this.put(`/vault/${vaultId}/members/${userId}`, options, {
+      headers: { 'X-Http-Token': this.token as string },
+      data: { status }
+    })
+  }
+
+  async removeVaultMember(
+    vaultId: string | number,
+    userId: string | number,
+    options?: OptType
+  ): Promise<StoredSafeResponse<StoredSafeData>> {
+    this.assertTokenExists()
+    return await this.delete(`/vault/${vaultId}/members/${userId}`, options, {
+      headers: { 'X-Http-Token': this.token as string }
+    })
+  }
+
   async getObject(
     id: string | number,
     children = false,
