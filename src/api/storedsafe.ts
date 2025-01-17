@@ -359,7 +359,7 @@ export class StoredSafe<ResType = any, OptType = any> {
     options?: OptType
   ): Promise<StoredSafeResponse<StoredSafeData>> {
     this.assertTokenExists()
-    return await this.post(`/vault/${vaultId}/members/${userId}`, options, {
+    return await this.post(`/vault/${vaultId}/member/${userId}`, options, {
       headers: { 'X-Http-Token': this.token as string },
       data: { status }
     })
@@ -375,7 +375,7 @@ export class StoredSafe<ResType = any, OptType = any> {
     options?: OptType
   ): Promise<StoredSafeResponse<StoredSafeData>> {
     this.assertTokenExists()
-    return await this.put(`/vault/${vaultId}/members/${userId}`, options, {
+    return await this.put(`/vault/${vaultId}/member/${userId}`, options, {
       headers: { 'X-Http-Token': this.token as string },
       data: { status }
     })
@@ -387,7 +387,7 @@ export class StoredSafe<ResType = any, OptType = any> {
     options?: OptType
   ): Promise<StoredSafeResponse<StoredSafeData>> {
     this.assertTokenExists()
-    return await this.delete(`/vault/${vaultId}/members/${userId}`, options, {
+    return await this.delete(`/vault/${vaultId}/member/${userId}`, options, {
       headers: { 'X-Http-Token': this.token as string }
     })
   }
