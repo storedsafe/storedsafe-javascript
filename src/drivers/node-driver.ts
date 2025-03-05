@@ -43,7 +43,11 @@ export class NodeDriver implements RequestDriver<IncomingMessage, https.RequestO
   private handleRequest(request: ClientRequest): PromiseCallback<NodeResponse> {
     return (resolve, reject) => {
       request.on('response', (response) => {
-        response.on('data', (data) => {
+        let data: string = ""
+        response.on('data', (chunk) => {
+          data += chunk.toString()
+        })
+        response.on('end', () => {
           resolve({
             status: response.statusCode as number,
             statusText: response.statusMessage,

@@ -3,11 +3,14 @@ import { ClientRequest, IncomingMessage } from 'http'
 // Needs to be defined before https imports because jest.mock is hoisted
 
 const mockRequestError = jest.fn<void, [(reason?: any) => void]>()
-const mockResponseOn = jest.fn<void, [
-  event: string, listener: (data: any) => void
-]>((event, listener) => {
+const mockResponseOn = jest.fn<
+  void,
+  [event: string, listener: Function]
+>((event, listener) => {
   if (event === 'data') {
-    listener(undefined)
+    listener("")
+  } else if (event === 'end') {
+    listener()
   }
 })
 const mockRequestOn = jest.fn<
@@ -21,10 +24,16 @@ interface MockResponse {
 }
 
 function mockResponse(response: MockResponse) {
-  mockRequestWrite.mockImplementationOnce((data: any) => {
+  mockRequestWrite.mockImplementationOnce((data: string) => {
     mockResponseOn.mockImplementationOnce((event, listener) => {
       if (event === 'data') {
-        listener(data)
+        for (let i = 0; i < data.length; i += 2) {
+          // Write data in chucks of 2 characters
+          listener(data.slice(i, i+2))
+        }
+      }
+      if (event === 'end') {
+        listener()
       }
     })
   })
@@ -93,6 +102,7 @@ function expectRequestFlow(data: any) {
   expect(mockRequestOn).toHaveBeenNthCalledWith(2, 'error', expect.any(Function))
   expect(mockRequestError).toHaveBeenCalledWith(expect.any(Function))
   expect(mockResponseOn).toHaveBeenCalledWith('data', expect.any(Function))
+  expect(mockResponseOn).toHaveBeenCalledWith('end', expect.any(Function))
 }
 
 function expectRequestFlowNoData() {
@@ -102,6 +112,7 @@ function expectRequestFlowNoData() {
   expect(mockRequestOn).toHaveBeenNthCalledWith(2, 'error', expect.any(Function))
   expect(mockRequestError).toHaveBeenCalledWith(expect.any(Function))
   expect(mockResponseOn).toHaveBeenCalledWith('data', expect.any(Function))
+  expect(mockResponseOn).toHaveBeenCalledWith('end', expect.any(Function))
 }
 
 describe('Create node https driver', () => {
@@ -151,7 +162,7 @@ describe('basic requests', () => {
       method: "GET"
     })
     expectRequestFlowNoData()
-    expect(res.body).toEqual(undefined)
+    expect(res.body).toEqual("")
     expect(res.status).toEqual(200)
     expect(res.statusText).toEqual('ok')
     expect(res.response).toEqual(expect.objectContaining(mockRes))
@@ -208,7 +219,7 @@ describe('Request parameters', () => {
       method: "GET"
     })
     expectRequestFlowNoData()
-    expect(res.body).toEqual(undefined)
+    expect(res.body).toEqual("")
     expect(res.status).toEqual(200)
     expect(res.statusText).toEqual('ok')
     expect(res.response).toEqual(expect.objectContaining(mockRes))
@@ -234,7 +245,7 @@ describe('Request parameters', () => {
       method: "GET"
     })
     expectRequestFlowNoData()
-    expect(res.body).toEqual(undefined)
+    expect(res.body).toEqual("")
     expect(res.status).toEqual(200)
     expect(res.statusText).toEqual('ok')
     expect(res.response).toEqual(expect.objectContaining(mockRes))
@@ -265,7 +276,7 @@ describe('Request parameters', () => {
       method: "GET"
     })
     expectRequestFlowNoData()
-    expect(res.body).toEqual(undefined)
+    expect(res.body).toEqual("")
     expect(res.status).toEqual(200)
     expect(res.statusText).toEqual('ok')
     expect(res.response).toEqual(expect.objectContaining(mockRes))
