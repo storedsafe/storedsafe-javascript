@@ -256,7 +256,7 @@ describe("after authentication", () => {
     test(".addVaultMember", () => {
       const status = 2
       driver.mock({
-        path: `/vault/${id}/members/${id2}`,
+        path: `/vault/${id}/member/${id2}`,
         data: { status },
         method: 'POST',
         headers: { 'X-Http-Token': token },
@@ -272,7 +272,7 @@ describe("after authentication", () => {
     test(".editVaultMember", () => {
       const status = 4
       driver.mock({
-        path: `/vault/${id}/members/${id2}`,
+        path: `/vault/${id}/member/${id2}`,
         data: { status },
         method: 'PUT',
         headers: { 'X-Http-Token': token },
@@ -287,7 +287,7 @@ describe("after authentication", () => {
 
     test(".removeVaultMember", () => {
       driver.mock({
-        path: `/vault/${id}/members/${id2}`,
+        path: `/vault/${id}/member/${id2}`,
         method: 'DELETE',
         headers: { 'X-Http-Token': token },
         status: 200,
