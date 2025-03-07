@@ -66,6 +66,21 @@ storedsafe.decryptObject('42')
   });
 ```
 
+### Type hints
+```typescript
+// For browser applications, using the fetch library (fetch-driver)
+// https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API
+const { StoredSafe } = require('storedsafe')
+const api = new StoredSafe<Response,RequestInit>({ host: 'my-host', token: 'my-token' })
+
+// For node applications, using the https library (node-driver)
+// https://nodejs.org/api/https.html#httpsrequestoptions-callback
+const { StoredSafe } = require('storedsafe')
+const { IncomingMessage } = require('node:http')
+const { RequestOptions } = require('node:https')
+const api = new StoredSafe<IncomingMessage,RequestOptions>({ host: 'my-host', token: 'my-token' })
+```
+
 ### Method signatures
 ```typescript
 constructor<ResType, OptType>(
