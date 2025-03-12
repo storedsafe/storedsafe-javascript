@@ -108,7 +108,6 @@ export interface StoredSafeLegacyTemplate {
       options?: string[];
       options_default?: string;
       placeholder?: string;
-      fieldname: string;
     };
   };
 }
