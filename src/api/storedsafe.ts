@@ -248,7 +248,7 @@ export class StoredSafe<
         keys: `${passphrase}${this.apikey}${otp}`,
       },
     });
-    this.token = response.data.CALLINFO.token;
+    this.token = response.data?.CALLINFO?.token;
     return response;
   }
 
@@ -268,7 +268,7 @@ export class StoredSafe<
         apikey: this.apikey,
       },
     });
-    this.token = response.data.CALLINFO.token;
+    this.token = response.data?.CALLINFO?.token;
     return response;
   }
 
@@ -291,7 +291,7 @@ export class StoredSafe<
       },
       true
     );
-    this.token = response.data.CALLINFO.token;
+    this.token = response.data?.CALLINFO?.token;
     return response;
   }
 

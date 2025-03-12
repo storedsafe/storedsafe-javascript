@@ -84,7 +84,7 @@ const api = new StoredSafe<IncomingMessage,RequestOptions>({ host: 'my-host', to
 ### Method signatures
 ```typescript
 constructor<ResType, OptType>(
-  { site: string, apikey?: string, token?: string = null },
+  { site: string, apikey?: string, token?: string = null, options?: OptType = {} },
   version: string? ='1.0',
   driver: RequestDriver?
 )
@@ -132,7 +132,29 @@ generatePassword(params: {
 )
 ```
 
-### Migrating from 0.2.0
+## Changelog
+
+- 1.3.1
+  - Fixed script crashing on failed login
+  - Updated README with global options signature
+  - Added changelog to README
+- 1.3.0
+  - Added global driver options to be passed with all requests
+- 1.2.4
+  - Fixed node driver not reading whole response
+- 1.2.2
+  - Fixed typo in path for vault member endpoints
+- 1.2.1
+  - Updated README
+- 1.2.0
+  - Added methods for vault member management
+- 1.1.0
+  - Added methods for user management
+- 1.0.0
+  - Added method for getting files from StoredSafe
+  - Replaced axios with `node:http` for nodejs and `fetch` for browser
+
+## Migrating from 0.2.0
 
 - Axios is no longer used to make HTTP requests. Any references to axios-specific responses or errors should be replaced with either the `node:http` or `fetch` equivalents.
 - The `StoredSafe` class is no longer a default export. `import StoredSafe from 'storedsafe'` should be replaced with `import { StoredSafe } from 'storedsafe'`.
