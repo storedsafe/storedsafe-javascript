@@ -106,7 +106,7 @@ const url_mtls = `https://${host}:8443/api/${version}`;
 const username = "JohnDoe";
 const passphrase = "p4ssw0rd";
 const otp = "978675";
-const keys = `${passphrase}${apikey}${otp}`;
+const yubikey_otp = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
 
 // Sample request reply data
 const replySuccess = Object.freeze({
@@ -136,11 +136,17 @@ describe("before authentication", () => {
     driver.mock({
       path: "/auth",
       method: "POST",
-      data: { username, keys },
+      data: {
+        username: username,
+        passphrase: passphrase,
+        otp: yubikey_otp,
+        apikey: apikey,
+        logintype: LoginType.YUBIKEY,
+      },
       status: 201,
       body: JSON.stringify(replySuccess),
     });
-    const res = await storedsafe.loginYubikey(username, passphrase, otp);
+    const res = await storedsafe.loginYubikey(username, passphrase, yubikey_otp);
     expect(res.status).toBe(201);
     expect(storedsafe.token).toBe(token);
   });

@@ -134,6 +134,10 @@ generatePassword(params: {
 
 ## Changelog
 
+- 2.0.0
+  - Change to new yubikey login format (requires StoredSafe v2.3.0 or later)
+    - Uses logintype `yubikey_otp` and `passphrase`+`otp` instead of `keys`
+    - The loginYubikey method signature is unchanged
 - 1.3.1
   - Fixed script crashing on failed login
   - Updated README with global options signature

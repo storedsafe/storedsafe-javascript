@@ -23,7 +23,7 @@ import type { RequestDriver, RequestResponse } from "../drivers";
 import merge from "lodash.merge";
 
 export enum LoginType {
-  YUBIKEY = "yubikey-otp",
+  YUBIKEY = "yubikey_otp",
   TOTP = "totp",
   SMARTCARD = "smartcard",
 }
@@ -245,7 +245,10 @@ export class StoredSafe<
     const response = await this.post("/auth", options, {
       data: {
         username: username,
-        keys: `${passphrase}${this.apikey}${otp}`,
+        passphrase: passphrase,
+        otp: otp,
+        logintype: LoginType.YUBIKEY,
+        apikey: this.apikey,
       },
     });
     this.token = response.data?.CALLINFO?.token;
